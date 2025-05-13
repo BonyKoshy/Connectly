@@ -29,7 +29,7 @@ Connectly is a real-time chat application built with **Python Flask**, using **F
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/yourusername/connectly.git
+   git clone https://github.com/BonyKoshy/Connectly.git
    cd connectly
    ```
 
