@@ -103,4 +103,27 @@ This project is licensed under the **MIT License**.
 ## Author
 **Bony Koshy**  
 BCA, CMS College of Science & Commerce  
-https://www.linkedin.com/in/bonykoshy
+<!-- Modern Icon Button Contact Section -->
+
+<div style="display: flex; gap: 1rem; align-items: center;">
+  <!-- Email -->
+  <a href="mailto:bonykoshy@gmail.com" title="Email">
+    <img src="https://img.icons8.com/ios-filled/50/006bed/new-post.png" width="32" height="32" alt="Email Icon"/>
+  </a>
+
+  <!-- LinkedIn -->
+  <a href="https://linkedin.com/in/bonykoshy" target="_blank" title="LinkedIn">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" width="32" height="32" alt="LinkedIn Icon"/>
+  </a>
+
+  <!-- GitHub -->
+  <a href="https://github.com/BonyKoshy" target="_blank" title="GitHub">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="32" height="32" alt="GitHub Icon"/>
+  </a>
+
+  <!-- Instagram -->
+  <a href="https://instagram.com/bonn_i.e" target="_blank" title="Instagram">
+    <img src="https://img.icons8.com/ios-filled/50/E4405F/instagram-new.png" width="32" height="32" alt="Instagram Icon"/>
+  </a>
+</div>
+
