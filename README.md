@@ -25,6 +25,30 @@ Connectly is a real-time chat application built with **Python Flask**, using **F
 
 ---
 
+## Preview
+
+### Login Page
+![Login](Screenshots/login.png)
+
+### Register Page
+![Register](Screenshots/register.png)
+
+### Chat Interface
+![Chat Page](Screenshots/Chat_Page.png)
+
+### Sidebar View
+![Sidebar](Screenshots/side_bar.png)
+
+### Chat Search
+![Search](Screenshots/search_list.png)
+
+### Chat List
+![Chat List](Screenshots/chat_list.png)
+
+### Landing Page
+![Index](Screenshots/index.png)
+
+
 ## Installation
 
 1. **Clone the Repository**
