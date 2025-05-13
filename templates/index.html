@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connectly</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styleindex.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
+</head>
+<body>  
+    <header>
+    <div class="navbar">
+        <div class="logo">Connectly</div>
+        <nav>
+            <ul>
+                <li><a href="#hero">HOME</a></li>
+                <li><a href="https://github.com/BonyKoshy">Developer Docs</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <a href="{{ url_for('login')}}" class="btn auth-btn">Sign In</a>
+            <a href="{{ url_for('register')}}" class="btn auth-btn signup">Create Account</a>
+        </div>
+    </div>
+</header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div id="current-date" class="current-date"></div>
+        <h1>Introducing Connectly!</h1>
+        <div class="buttons">            
+            <a href="{{ url_for('register')}}" class="btn">Get Started!</a>
+            <a href="#abstract" class="hw">Discover How It Works ></a>
+        </div>
+        <p class="tagline2"><br/><br/>Connectly is an AI-powered, real-time chat platform offering seamless one-on-one messaging, dynamic group chats, and smart language translation. With built-in APIs for news, weather, and automation, Connectly keeps you informed while delivering lightning-fast, secure conversations. Optimized for the modern web, it's built with cutting-edge PWA technology for a smooth cross-device experience.</p>
+    </section>
+
+    <!-- Section 2: Abstract -->
+    <section id="abstract" class="abstract">
+        <h2>PROBLEMS & SOLUTIONS</h2>
+        <div class="problem-solution-container">
+            <!-- Left side (Problems) -->
+            <div class="problems">
+                
+                <ul>
+                    <li class="problem-item">
+                        <i class="bi bi-x-circle icon"></i> Lack of real-time multilingual communication
+                    </li>
+                    <li class="problem-item">
+                        <i class="bi bi-x-circle icon"></i> Inefficient apps slowing down devices
+                    </li>
+                    <li class="problem-item">
+                        <i class="bi bi-x-circle icon"></i> Difficulty in team coordination & workflow
+                    </li>
+                </ul>
+                
+            </div>
+        
+            <!-- Divider -->
+            <div class="divider"></div>
+        
+            <!-- Right side (Solutions) -->
+            <div class="solutions">
+                
+                <ul>
+                    <li class="solution-item">
+                        <i class="bi bi-check-circle icon"></i> Instant, AI-driven message translation in 100+ languages
+                    </li>
+                    <li class="solution-item">
+                        <i class="bi bi-check-circle icon"></i> Optimized for performance with minimal CPU/RAM usage
+                    </li>
+                    <li class="solution-item">
+                        <i class="bi bi-check-circle icon"></i> Seamless teamwork with shared chat rooms & productivity tools
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+    </section>
+
+     <!-- System Specifications Section -->
+  <section id="system-specifications">
+    <h2>System Specifications</h2>
+    <div class="specifications">
+      <!-- Hardware Requirements Card -->
+      <div class="spec-card" onclick="toggleRequirements()">
+        <h3><i class="fas fa-microchip animated-icon"></i> Hardware Requirements</h3>
+        <div class="spec-details">
+          <ul>
+            <li><i class="fas fa-microchip"></i> Processor: Intel Core i3 (or equivalent)</li>
+            <li><i class="fas fa-memory"></i> RAM: 4GB</li>
+            <li><i class="fas fa-hdd"></i> Storage: 20GB (HDD/SSD)</li>
+            <li><i class="fas fa-desktop"></i> Network: 10 Mbps internet</li>
+            <li><i class="fas fa-desktop"></i> OS: Windows 10 / Linux (Ubuntu 18.04+)</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Software Requirements Card -->
+      <div class="spec-card" onclick="toggleRequirements()">
+        <h3><i class="fas fa-code animated-icon"></i> Software Requirements</h3>
+        <div class="spec-details">
+          <ul>
+            <li><i class="fas fa-check-circle"></i> Frontend: HTML5, CSS3, JavaScript</li>
+            <li><i class="fas fa-check-circle"></i> Backend: Python Flask + Socket.IO</li>
+            <li><i class="fas fa-check-circle"></i> Database: SQLite</li>
+            <li><i class="fas fa-check-circle"></i> Deep Translator</li>
+            <li><i class="fas fa-check-circle"></i> Google reCAPTCHA</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+   <!-- Section 6: Modules -->
+<section id="modules">
+    <h2>Modules</h2>
+    <div class="module-boxes">
+        <div class="module" onclick="window.location.href='#hero'">
+            <h3>Landing Page</h3>
+            <p>A sleek, modern homepage providing an overview of Connectly's powerful features.</p>
+        </div>
+        
+        <div class="module" onclick="window.location.href='/register'">            
+            <h3>Register Page</h3>
+            <p>Secure login system with encrypted credentials and session management.</p>
+        </div>
+        
+        <div class="module" onclick="window.location.href='/login'">            
+            <h3>Login Page</h3>
+            <p>User authentication and access control interface.</p>
+        </div>
+
+        <div class="module" onclick="window.location.href='/chat'">            
+            <h3>Chat Interface</h3>
+            <p>Real-time conversations with AI-powered translation and encrypted communication.</p>
+        </div>
+    </div>
+</section>
+
+     <!-- Co-developed By Section with Carousel -->
+  <section  class="codev" id="co-developed">
+    <h2>Built & Enhanced With</h2>
+    <div class="carousel">
+      <div class="carousel-track">
+        <div class="carousel-item">
+          <img src="/static/images/Google Translate API.webp" alt="Google Translate" />
+          <p>Google Translate</p>
+        </div>
+        <div class="carousel-item">
+            <img src="/static/images/VSC.png" alt="VS Code" />
+            <p>VS Code</p>
+          </div>
+          <div class="carousel-item">
+            <img src="static/images/25231.png" alt="github" />
+            <p>github</p>
+          </div>
+          <div class="carousel-item">
+            <img src="/static/images/html.webp" alt="HTML5" />
+            <p>HTML5</p>
+          </div>
+          <div class="carousel-item">
+            <img src="/static/images/css.webp" alt="CSS3" />
+            <p>CSS3</p>
+          </div>
+          <div class="carousel-item">
+            <img src="/static/images/js.webp" alt="JavaScript" />
+            <p>JavaScript</p>
+          </div>
+          <div class="carousel-item">
+            <img src="/static/images/bootstrap.png" alt="bootstrap" />
+            <p>bootstrap</p>
+          </div>
+          <div class="carousel-item">
+            <img src="/static/images/flask.png" alt="Flask" />
+            <p>Flask</p>
+          </div>
+          <div class="carousel-item">
+            <img src="/static/images/sqlite.png" alt="SQLite3" />
+            <p>SQLite3</p>
+          </div>
+          <div class="carousel-item">
+            <img src="static/images/Socket-io.svg.png" alt="Socket IO" />
+            <p>Socket IO</p>
+          </div>
+          <div class="carousel-item">
+            <img src="/static/images/ReCAPTCHA.png" alt="Google ReCAPTCHA" />
+            <p>Google ReCAPTCHA</p>
+          </div>
+        <!-- Add more carousel items as needed -->
+        </div>
+      </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <h2>Stay Connected</h2>
+    <div class="contact-links">
+      <a href="https://www.facebook.com/bony.koshy.5/" target="_blank"><i class="bi bi-facebook"></i></a>
+      <a href="https://www.linkedin.com/in/bonykoshy/" target="_blank"><i class="bi bi-linkedin"></i></a>
+      <a href="https://www.instagram.com/bonn_i.e/" target="_blank"><i class="bi bi-instagram"></i></a>
+    </div>
+    <p class="project-author">© 2025 Connectly by Bony Koshy</p>
+  </section>
+    <script src="static/js/index.js"></script>
+</body>
+</html>

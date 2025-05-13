@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+/* General Styles */
+html {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('../images/1bg.jpeg') no-repeat ;
+    background-size: cover;
+    background-attachment: scroll;
+    color: #b0c7f0;
+    scroll-snap-type: y mandatory;
+    overflow-x: hidden;
+    height: 100vh;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+
+.form-container {
+    width: 340px;
+    border-radius: 20px;
+    background-color: #16213e5e; /* Darker theme */
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.title {
+    font-size: 40px;
+    font-weight: 700;
+    color: #4c8bf5;
+}
+
+.input-group {
+    text-align: center;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.input-group label {
+    display: block;
+    font-size: 15px;
+    color: #b0c7f0;
+    margin-bottom: 4px;
+    align-items: center;
+}
+
+.input-group input,
+.input-group select {
+    width: 90%;
+    border-radius: 10px;
+    border: 1px solid #4c8bf5;
+    padding: 10px;
+    background-color: #0b1a34;
+    color: white;
+    outline: none;
+}
+
+.input-group select {
+    cursor: pointer;
+}
+
+.flash-message {
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.flash-message.success {
+    background-color: #28a745;
+    color: white;
+}
+
+.flash-message.danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+
+
+.g-recaptcha {
+    margin: 15px auto;
+    display: flex;
+    justify-content: center;
+    forced-color-adjust: blue;
+}
+
+.sign {
+    margin-top: 1.5rem;
+    width: 90%;
+    background-color: #4c8bf5;
+    padding: 0.75rem;
+    text-align: center;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.sign:hover {
+    background-color: #3769d5;
+}
+
+.signup {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #b0c7f0;
+}
+
+.signup a {
+    color: #4c8bf5;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.signup a:hover {
+    text-decoration: underline;
+}

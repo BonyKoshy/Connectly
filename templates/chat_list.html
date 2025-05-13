@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connectly Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylechat.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
+    <style>
+        .search-results {
+            display: none;
+            position: absolute;
+            background: white;
+            width: 100%;
+            z-index: 100;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        .results-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .results-list li {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .results-list li:hover {
+            background: #252525;
+        }
+        .result-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+        }
+        .result-item i {
+            font-size: 1.2em;
+            color: #666;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <nav class="nav-buttons">
+                <a class="nav-btn" href="{{ url_for('logout') }}"><i class="bi bi-chat-text"></i> <span class="label">Connectly</span></a>
+                <a class="nav-btn" href="{{ url_for('chat_list') }}"><i class="bi bi-chat"></i> <span class="label">Chats</span></a>
+                <a class="nav-btn" href="/groups"><i class="bi bi-people"></i> <span class="label">Groups</span></a>
+                <a class="nav-btn" href="{{ url_for('filetransfer') }}"><i class="bi bi-folder"></i> <span class="label">Sharing</span></a>
+            </nav>
+            <div class="bottom-buttons">
+                <a class="nav-btn active" href="/profile"><i class="bi bi-person-circle"></i> <span class="label">{{ username }}</span></a>
+                <a class="nav-btn" href="{{ url_for('logout') }}"><i class="bi bi-box-arrow-right"></i> <span class="label">Logout</span></a>
+            </div>
+        </div>
+        <!-- Chat List -->
+        <div class="chat-list">
+          <div class="search-container">
+            <form class="form" method="query">
+                <label for="search">
+                    <input required="" autocomplete="off" placeholder="search your chats" id="search" type="text">
+                    <div class="icon">
+                        <svg stroke-width="2" stroke="currentColor" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" class="swap-on">
+                            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linejoin="round"
+                                stroke-linecap="round"></path>
+                        </svg>
+                    </div>
+                    <button type="reset" class="close-btn">
+                        <svg viewBox="0 0 20 20" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg">
+                            <path clip-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                fill-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </label>
+            </form>
+            <div class="search-results" id="search-results">
+                <ul class="results-list" id="results-list"></ul>
+            </div>
+
+        </div>
+        
+            <div class="chat-items" id="chat-list"></div> 
+        </div>
+        
+        <!-- Main Chat Area -->
+        <div class="chat-main">
+            <div class="chat-header">
+                <div class="avatar"></div>
+                <div>
+                    <label class="chat-name">Chats</label>
+                    
+                </div>
+            </div>
+            <div class="chat-messages">
+              <div class="left-image">
+                    <img src="static/images/Chat-rafiki.svg" alt="Center Image" class="center-image-small">
+                    <h2>No Messages here yet!. Start new Chat.</h2>
+                </div>
+            </div>
+            
+              
+        </div>
+    </div>
+    <!-- Add this before your own JS file -->
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search');
+            const resultsList = document.getElementById('results-list');
+            
+            // Show/hide search results container
+            const searchResults = document.getElementById('search-results');
+            
+            searchInput.addEventListener('input', async function() {
+                const query = this.value.trim();
+                if (query.length < 2) {
+                    searchResults.style.display = 'none';
+                    resultsList.innerHTML = '';
+                    return;
+                }
+                
+                try {
+                    const response = await fetch(`/search_users?q=${encodeURIComponent(query)}`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const users = await response.json();
+                    
+                    if (users.length > 0) {
+                        resultsList.innerHTML = users.map(user => `
+                            <li class="result-item" data-username="${user.username}">
+                                <i class="bi bi-person-circle"></i>
+                                <span class="username">${user.username}</span>
+                            </li>
+                        `).join('');
+                        searchResults.style.display = 'block';
+                    } else {
+                        resultsList.innerHTML = '<li class="no-results">No users found</li>';
+                        searchResults.style.display = 'block';
+                    }
+                    
+                    // Add click handlers to result items
+                    document.querySelectorAll('.result-item').forEach(item => {
+                        item.addEventListener('click', function() {
+                            const username = this.dataset.username;
+                            window.location.href = `/start_chat/${username}`;
+                        });
+                    });
+                } catch (error) {
+                    console.error('Search failed:', error);
+                    resultsList.innerHTML = '<li class="error">Error loading search results</li>';
+                    searchResults.style.display = 'block';
+                }
+            });
+
+            // Hide results when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.search-container')) {
+                    searchResults.style.display = 'none';
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>
