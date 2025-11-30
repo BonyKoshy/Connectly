@@ -1,0 +1,35 @@
+# --- Python & Bytecode ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Virtual Environments ---
+# Common names for virtual envs
+venv/
+env/
+.env
+
+# --- Database ---
+# SQLite databases shouldn't be committed as they contain live data
+*.db
+*.sqlite3
+chat.db
+users.db
+
+# --- Flask ---
+instance/
+.webassets-cache
+
+# --- OS System Files ---
+# Found in your uploaded files
+desktop.ini
+Thumbs.db
+.DS_Store
+
+# --- IDE & Editors ---
+# VS Code settings (unless you want to share specific launch configs)
+.vscode/
+.idea/
+
+# --- Logs ---
+*.log
