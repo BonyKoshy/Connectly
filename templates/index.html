@@ -3,35 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connectly</title>
+    <title>Connectly - Secure Real-Time Chat Platform</title>
+    <meta name="description" content="Connectly is an AI-powered, real-time chat platform offering seamless one-on-one messaging, dynamic group chats, and smart language translation.">
+    <meta name="keywords" content="connectly, chat app, ai translation, realtime messaging, secure chat, group chat">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url_for('main.index', _external=True) }}">
+    <meta property="og:title" content="Connectly - Secure Real-Time Chat Platform">
+    <meta property="og:description" content="Connectly is an AI-powered, real-time chat platform offering seamless one-on-one messaging, dynamic group chats, and smart language translation.">
+    <meta property="og:image" content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
+
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styleindex.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="icon" href="/static/images/logo.png" type="image/png">
 </head>
 <body>  
     <header>
-    <div class="navbar">
+    <nav class="navbar" aria-label="Main Navigation">
         <div class="logo">Connectly</div>
-        <nav>
+        <div class="nav-links">
             <ul>
                 <li><a href="#hero">HOME</a></li>
-                <li><a href="https://github.com/BonyKoshy">Developer Docs</a></li>
+                <li><a href="https://github.com/BonyKoshy" aria-label="Developer Documentation">Developer Docs</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
-        </nav>
-        <div class="auth-buttons">
-            <a href="{{ url_for('login')}}" class="btn auth-btn">Sign In</a>
-            <a href="{{ url_for('register')}}" class="btn auth-btn signup">Create Account</a>
         </div>
-    </div>
+        <div class="auth-buttons">
+            <a href="{{ url_for('auth.login')}}" class="btn auth-btn">Sign In</a>
+            <a href="{{ url_for('auth.register')}}" class="btn auth-btn signup">Create Account</a>
+        </div>
+    </nav>
 </header>
+<main>
 
     <!-- Hero Section -->
     <section class="hero" id="hero">
         <div id="current-date" class="current-date"></div>
         <h1>Introducing Connectly!</h1>
         <div class="buttons">            
-            <a href="{{ url_for('register')}}" class="btn">Get Started!</a>
+            <a href="{{ url_for('auth.register')}}" class="btn">Get Started!</a>
             <a href="#abstract" class="hw">Discover How It Works ></a>
         </div>
         <p class="tagline2"><br/><br/>Connectly is an AI-powered, real-time chat platform offering seamless one-on-one messaging, dynamic group chats, and smart language translation. With built-in APIs for news, weather, and automation, Connectly keeps you informed while delivering lightning-fast, secure conversations. Optimized for the modern web, it's built with cutting-edge PWA technology for a smooth cross-device experience.</p>
@@ -117,25 +128,25 @@
 <section id="modules">
     <h2>Modules</h2>
     <div class="module-boxes">
-        <div class="module" onclick="window.location.href='#hero'">
+        <a href="#hero" class="module" style="text-decoration: none; color: inherit;">
             <h3>Landing Page</h3>
             <p>A sleek, modern homepage providing an overview of Connectly's powerful features.</p>
-        </div>
+        </a>
         
-        <div class="module" onclick="window.location.href='/register'">            
+        <a href="{{ url_for('auth.register') }}" class="module" style="text-decoration: none; color: inherit;">            
             <h3>Register Page</h3>
             <p>Secure login system with encrypted credentials and session management.</p>
-        </div>
+        </a>
         
-        <div class="module" onclick="window.location.href='/login'">            
+        <a href="{{ url_for('auth.login') }}" class="module" style="text-decoration: none; color: inherit;">            
             <h3>Login Page</h3>
             <p>User authentication and access control interface.</p>
-        </div>
+        </a>
 
-        <div class="module" onclick="window.location.href='/chat'">            
+        <a href="{{ url_for('chat.chat_list') }}" class="module" style="text-decoration: none; color: inherit;">            
             <h3>Chat Interface</h3>
             <p>Real-time conversations with AI-powered translation and encrypted communication.</p>
-        </div>
+        </a>
     </div>
 </section>
 
@@ -203,6 +214,7 @@
     </div>
     <p class="project-author">© 2025 Connectly by Bony Koshy</p>
   </section>
+  </main>
     <script src="static/js/index.js"></script>
 </body>
 </html>
