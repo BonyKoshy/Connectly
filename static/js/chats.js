@@ -1,161 +1,130 @@
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM fully loaded and parsed');
-    
-    // Initialize chat functionality
-    const socket = io();
-    
-    // Listen for user join event
-    socket.on('user_joined', function(username) {
-        showToast(`${username} has joined the room`);
-    });
+import { getSocket } from './modules/socket.js';
+import { showToast, getById } from './modules/ui.js';
+import { formatTime, escapeHtml } from './modules/utils.js';
 
-    // Listen for user leave event
-    socket.on('user_left', function(username) {
-        showToast(`${username} has left the room`);
-    });
-
-    let currentRoom = null;
-    const username = document.body.dataset.username || 'Anonymous';
-    
-    // Validate required elements exist
-    const requiredElements = {
-        sendButton: document.getElementById('sendButton'),
-        messageInput: document.getElementById('messageInput'),
-        messagesContainer: document.getElementById('messages-container')
-    };
-
-    for (const [elementName, element] of Object.entries(requiredElements)) {
-        if (!element) {
-            console.error(`Required element not found: ${elementName}`);
-            return;
-        }
+class ChatManager {
+    constructor() {
+        this.socket = getSocket();
+        this.username = document.body.dataset.username || 'Anonymous';
+        this.currentRoom = null;
+        
+        // UI Elements
+        this.ele = {
+            sendButton: getById('sendButton'),
+            messageInput: getById('messageInput'),
+            messagesContainer: getById('messages-container'),
+            chatName: getById('chat-name'),
+            toast: getById('toast')
+        };
+        
+        this.init();
     }
-
-    console.log('Chat initialized - Username:', username);
-
-    // Handle connection status
-    socket.on('connect', () => {
-        console.log('Connected to server');
-    });
-
-    socket.on('disconnect', () => {
-        console.log('Disconnected from server');
-    });
-
-    // Handle incoming messages
-    socket.on('message', (data) => {
-        try {
-            const messagesContainer = document.getElementById('messages-container');
-            const noMessages = document.getElementById('no-messages');
+    
+    init() {
+        if (!this.socket) return;
+        
+        this.setupSocketListeners();
+        this.setupUIListeners();
+        this.joinCurrentRoom();
+        
+        console.log(`ChatManager initialized for user: ${this.username}`);
+    }
+    
+    setupSocketListeners() {
+        // User Join/Leave
+        this.socket.on('user_joined', (username) => showToast(`${username} has joined`));
+        this.socket.on('user_left', (username) => showToast(`${username} has left`));
+        
+        // Messages
+        this.socket.on('message', (data) => this.handleIncomingMessage(data));
+        
+        // Errors
+        this.socket.on('error', (err) => {
+            console.error('Socket error:', err);
+            showToast(`Error: ${err.message || 'Unknown error'}`);
+        });
+    }
+    
+    setupUIListeners() {
+        if (this.ele.sendButton && this.ele.messageInput) {
+            this.ele.sendButton.addEventListener('click', () => this.sendMessage());
             
-            if (noMessages) {
-                noMessages.style.display = 'none';
-            }
-
-            if (!data.message) {
-                console.error('Received message with undefined content');
-                return;
-            }
-            
-            // Format timestamp from server or use current time
-            const timestamp = data.timestamp ? 
-                new Date(data.timestamp).toLocaleTimeString() : 
-                new Date().toLocaleTimeString();
-            
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${data.user === username ? 'sent' : 'received'}`;
-            messageDiv.innerHTML = `
-                <div class="message-content">${data.message}</div>
-                <div class="message-info">
-                    <span class="message-user">${data.user || 'Unknown'}</span>
-                    <span class="message-time">${timestamp}</span>
-                </div>
-            `;
-
-            if (messagesContainer) {
-                messagesContainer.appendChild(messageDiv);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
-        } catch (error) {
-            console.error('Error handling message:', error);
-        }
-    });
-
-    // Handle errors
-    socket.on('error', (error) => {
-        const messagesContainer = document.getElementById('messages-container');
-        if (messagesContainer) {
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'message error';
-            errorDiv.textContent = error.message || 'An error occurred';
-            messagesContainer.appendChild(errorDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-    });
-
-    // Handle message sending
-    const sendButton = document.getElementById('sendButton');
-    const messageInput = document.getElementById('messageInput');
-
-    const sendMessage = () => {
-        const message = messageInput.value.trim();
-        if (message && currentRoom) {
-            // Disable input while sending
-            messageInput.disabled = true;
-            sendButton.disabled = true;
-
-            socket.emit('message', {
-                room: currentRoom,
-                message: message,
-                user: username
-            }, (ack) => {
-                // Re-enable input after server acknowledges
-                messageInput.disabled = false;
-                sendButton.disabled = false;
-                
-                if (ack && ack.error) {
-                    console.error('Message send error:', ack.error);
-                } else {
-                    messageInput.value = '';
-                    messageInput.focus();
-                }
+            this.ele.messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') this.sendMessage();
             });
         }
-    };
-
-    if (sendButton && messageInput) {
-        // Handle click event
-        sendButton.addEventListener('click', sendMessage);
+    }
+    
+    joinCurrentRoom() {
+        // Extract room from URL: /chat/<room>
+        const pathParts = window.location.pathname.split('/');
+        // Assuming last part is room, or second to last if trailing slash
+        const room = pathParts[pathParts.length - 1] || pathParts[pathParts.length - 2];
         
-        // Handle Enter key press
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
+        if (room && window.location.pathname.includes('/chat/')) {
+            this.currentRoom = room;
+            this.socket.emit('join', { room: this.currentRoom, username: this.username });
+            console.log(`Joined room: ${this.currentRoom}`);
+        }
+    }
+    
+    handleIncomingMessage(data) {
+        if (!data.message) return;
+        
+        const isSent = data.user === this.username;
+        const time = formatTime(data.timestamp);
+        const safeMessage = escapeHtml(data.message);
+        
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${isSent ? 'sent' : 'received'}`;
+        msgDiv.innerHTML = `
+            <div class="message-content">${safeMessage}</div>
+            <div class="message-info" style="font-size: 0.75rem; opacity: 0.7; margin-top: 4px;">
+                <span class="message-user">${escapeHtml(data.user)}</span> • 
+                <span class="message-time">${time}</span>
+            </div>
+        `;
+        
+        if (this.ele.messagesContainer) {
+            this.ele.messagesContainer.appendChild(msgDiv);
+            this.scrollToBottom();
+        }
+    }
+    
+    sendMessage() {
+        const text = this.ele.messageInput.value.trim();
+        if (!text || !this.currentRoom) return;
+        
+        this.setLoading(true);
+        
+        this.socket.emit('message', {
+            room: this.currentRoom,
+            message: text,
+            user: this.username
+        }, (ack) => {
+            this.setLoading(false);
+            if (ack && ack.error) {
+                showToast(`Failed to send: ${ack.error}`);
+            } else {
+                this.ele.messageInput.value = '';
+                this.ele.messageInput.focus();
             }
         });
     }
-
-    // Initialize chat room
-    const initializeChatRoom = () => {
-        const room = window.location.pathname.split('/').pop();
-        if (room) {
-            currentRoom = room;
-            socket.emit('join', { room: room, username: username });
-            console.log('Joined room:', room);
-        }
-    };
-
-    // Toast Helper
-    function showToast(message) {
-        const toast = document.getElementById('toast');
-        if (toast) {
-            toast.textContent = message;
-            toast.style.display = 'block';
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, 3000);
+    
+    setLoading(isLoading) {
+        if (this.ele.sendButton) this.ele.sendButton.disabled = isLoading;
+        if (this.ele.messageInput) this.ele.messageInput.disabled = isLoading;
+    }
+    
+    scrollToBottom() {
+        if (this.ele.messagesContainer) {
+            this.ele.messagesContainer.scrollTop = this.ele.messagesContainer.scrollHeight;
         }
     }
+}
 
-    initializeChatRoom();
+// Initialize on load
+document.addEventListener('DOMContentLoaded', () => {
+    new ChatManager();
 });

@@ -3,7 +3,7 @@ from config import config
 from app.extensions import socketio, csrf, limiter
 
 def create_app(config_name='default'):
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder='../templates', static_folder='../static')
     app.config.from_object(config[config_name])
 
     # Initialize extensions
@@ -26,19 +26,19 @@ def create_app(config_name='default'):
     
     @app.errorhandler(400)
     def bad_request(error):
-        return render_template('400.html'), 400
+        return render_template('error.html', error_code=400, error_title="Bad Request", error_message="The browser (or proxy) sent a request that this server could not understand."), 400
 
     @app.errorhandler(401)
     def unauthorized(error):
-        return render_template('401.html'), 401
+        return render_template('error.html', error_code=401, error_title="Unauthorized", error_message="You must be logged in to access this page."), 401
 
     @app.errorhandler(403)
     def forbidden(error):
-        return render_template('403.html'), 403
+        return render_template('error.html', error_code=403, error_title="Forbidden", error_message="You do not have permission to access this resource."), 403
 
     @app.errorhandler(404)
     def not_found(error):
-        return render_template('404.html'), 404
+        return render_template('error.html', error_code=404, error_title="Page Not Found", error_message="The requested URL was not found on the server."), 404
         
     @app.after_request
     def add_security_headers(response):

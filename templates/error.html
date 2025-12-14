@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Connectly - Error {{ error_code }}{% endblock %}
+
+{% block body_class %}auth-page{% endblock %}
+
+{% block content %}
+<main class="form-container">
+    <p class="title" style="color: #dc3545;">Error {{ error_code }}</p>
+    <div style="margin-top: 20px;">
+        <h3 style="color: #ffffff;">{{ error_title }}</h3>
+        <p style="color: #b0c7f0; margin-top: 10px;">{{ error_message }}</p>
+    </div>
+    <div style="margin-top: 30px;">
+        <a href="{{ url_for('main.index') }}" class="sign" style="text-decoration: none; display: inline-block;">Return Home</a>
+    </div>
+</main>
+{% endblock %}

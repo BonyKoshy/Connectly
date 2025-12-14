@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Connectly{% endblock %}</title>
+    <meta name="description" content="{% block description %}Secure Real-Time Chat Platform{% endblock %}">
+    {% block extra_meta %}{% endblock %}
+
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/m3-variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}" {% block body_attrs %}{% endblock %}>
+    {% block navbar %}
+    <!-- Navbar can be overridden by pages -->
+    {% endblock %}
+
+    <!-- Global Flash Messages -->
+    <div class="flash-messages-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    {% block content %}
+    <!-- Main content goes here -->
+    {% endblock %}
+
+    {% block footer %}
+    <!-- Footer can be overridden by pages -->
+    {% endblock %}
+
+    {% block scripts %}
+    <!-- Global scripts can go here -->
+    {% endblock %}
+</body>
+</html>
