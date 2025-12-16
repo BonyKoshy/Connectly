@@ -1,77 +1,104 @@
-{% extends 'base.html' %}
-
-{% block title %}Connectly - Chats{% endblock %}
-{% block description %}View your active chats.{% endblock %}
-
-{% block body_class %}chat-app{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
-{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% block title %}Connectly - Chats{% endblock %} {%
+block description %}View your active chats.{% endblock %} {% block body_class
+%}chat-app{% endblock %} {% block extra_css %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/chat.css') }}"
+/>
+{% endblock %} {% block content %}
 <div class="chat-layout">
-    <!-- Sidebar -->
-    <aside class="chat-sidebar">
-        <div class="chat-sidebar__nav">
-            <a class="nav-item" href="{{ url_for('main.index') }}" title="Home">
-                <i class="bi bi-house-door nav-item__icon"></i>
-                <span class="nav-item__label">Home</span>
-            </a>
-            <a class="nav-item nav-item--active" href="{{ url_for('chat.chat_list') }}" title="Chats">
-                <i class="bi bi-chat-dots nav-item__icon"></i>
-                <span class="nav-item__label">Chats</span>
-            </a>
-            <a class="nav-item" href="{{ url_for('main.groups') }}" title="Groups">
-                <i class="bi bi-people nav-item__icon"></i>
-                <span class="nav-item__label">Groups</span>
-            </a>
-            <a class="nav-item" href="{{ url_for('main.filetransfer') }}" title="Files">
-                <i class="bi bi-folder2-open nav-item__icon"></i>
-                <span class="nav-item__label">Files</span>
-            </a>
-        </div>
-        
-        <div class="chat-sidebar__bottom">
-            <a class="nav-item" href="{{ url_for('main.profile') }}" title="Profile">
-                <div class="avatar avatar--small"><i class="bi bi-person"></i></div>
-                <span class="nav-item__label">{{ username }}</span>
-            </a>
-            <a class="nav-item" href="{{ url_for('auth.logout') }}" title="Logout">
-                <i class="bi bi-box-arrow-right nav-item__icon"></i>
-                <span class="nav-item__label">Logout</span>
-            </a>
-        </div>
-    </aside>
+  <!-- Sidebar -->
+  <aside class="chat-sidebar">
+    <div class="chat-sidebar__nav">
+      <a class="nav-item" href="{{ url_for('main.index') }}" title="Home">
+        <i class="bi bi-house-door nav-item__icon"></i>
+        <span class="nav-item__label">Home</span>
+      </a>
+      <a
+        class="nav-item nav-item--active"
+        href="{{ url_for('chat.chat_list') }}"
+        title="Chats"
+      >
+        <i class="bi bi-chat-dots nav-item__icon"></i>
+        <span class="nav-item__label">Chats</span>
+      </a>
+      <a class="nav-item" href="{{ url_for('main.groups') }}" title="Groups">
+        <i class="bi bi-people nav-item__icon"></i>
+        <span class="nav-item__label">Groups</span>
+      </a>
+      <a
+        class="nav-item"
+        href="{{ url_for('main.filetransfer') }}"
+        title="Files"
+      >
+        <i class="bi bi-folder2-open nav-item__icon"></i>
+        <span class="nav-item__label">Files</span>
+      </a>
+    </div>
 
-    <!-- Main Content Area -->
-    <main class="chat-main">
-        <div class="chat-content">
-            <div class="search-container" style="max-width: 600px; margin: 0 auto; width: 100%;">
-                <form class="form-chat-search">
-                    <input type="text" id="search" placeholder="Search conversations..." aria-label="Search">
-                    <i class="bi bi-search icon"></i>
-                </form>
-                <div class="search-results" id="search-results">
-                    <ul class="results-list" id="results-list"></ul>
-                </div>
-            </div>
+    <div class="chat-sidebar__bottom">
+      <a class="nav-item" href="{{ url_for('main.profile') }}" title="Profile">
+        <div class="avatar avatar--small"><i class="bi bi-person"></i></div>
+        <span class="nav-item__label">{{ username }}</span>
+      </a>
+      <a class="nav-item" href="{{ url_for('auth.logout') }}" title="Logout">
+        <i class="bi bi-box-arrow-right nav-item__icon"></i>
+        <span class="nav-item__label">Logout</span>
+      </a>
+    </div>
+  </aside>
 
-            <div class="chat-items-list" id="chat-list" style="max-width: 600px; margin: 20px auto; width: 100%;">
-                <!-- Chat Items injected here -->
-            </div>
-            
-            <div class="empty-state" style="text-align: center; margin-top: 100px; color: var(--md-sys-color-outline);">
-                <img src="/static/images/Chat-rafiki.svg" style="max-width: 300px; opacity: 0.8;">
-                <h3 class="headline-small">Start a new conversation</h3>
-                <p class="body-medium">Search for users above to begin chatting.</p>
-            </div>
+  <!-- Main Content Area -->
+  <main class="chat-main">
+    <div class="chat-content">
+      <div
+        class="search-container"
+        style="max-width: 600px; margin: 0 auto; width: 100%"
+      >
+        <form class="form-chat-search">
+          <input
+            type="text"
+            id="search"
+            placeholder="Search conversations..."
+            aria-label="Search"
+          />
+          <i class="bi bi-search icon"></i>
+        </form>
+        <div class="search-results" id="search-results">
+          <ul class="results-list" id="results-list"></ul>
         </div>
-    </main>
+      </div>
+
+      <div
+        class="chat-items-list"
+        id="chat-list"
+        style="max-width: 600px; margin: 20px auto; width: 100%"
+      >
+        <!-- Chat Items injected here -->
+      </div>
+
+      <div
+        class="empty-state"
+        style="
+          text-align: center;
+          margin-top: 100px;
+          color: var(--md-sys-color-outline);
+        "
+      >
+        <img
+          src="/static/images/Chat-rafiki.svg"
+          style="max-width: 300px; opacity: 0.8"
+        />
+        <h3 class="headline-small">Start a new conversation</h3>
+        <p class="body-medium">Search for users above to begin chatting.</p>
+      </div>
+    </div>
+  </main>
 </div>
-{% endblock %}
-
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-<script type="module" src="{{ url_for('static', filename='js/user_search.js') }}"></script>
+<script
+  type="module"
+  src="{{ url_for('static', filename='js/user_search.js') }}"
+></script>
 {% endblock %}

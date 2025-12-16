@@ -1,112 +1,249 @@
 {% extends 'base.html' %}
 
-{% block title %}Connectly - Secure AI Chat{% endblock %}
-{% block description %}AI-powered, real-time secure messaging platform.{% endblock %}
+{% block html_attrs %}data-theme="dark"{% endblock %}
 
-{% block body_class %}landing-page{% endblock %}
+{% block title %}Connectly - AI-Powered Chat{% endblock %}
+{% block description %}Connectly - AI-Powered Chat Platform. Chat globally, understand locally with real-time translation and secure messaging.{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing_m3.css') }}">
 {% endblock %}
 
 {% block navbar %}
-<header class="top-app-bar">
-    <div class="top-app-bar__container">
-        <div class="top-app-bar__leading">
-            <span class="brand-logo">Connectly</span>
+    <nav class="m3-navbar">
+        <div id="google_translate_element" style="display:none"></div>
+        <div class="nav-container">
+            <a href="#" class="brand-logo" aria-label="Connectly Home">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Connectly Logo" class="nav-logo" width="40" height="40" style="height: 40px; width: auto;">
+                Connectly
+            </a>
+            <div class="nav-actions">
+                <!-- Dark Mode Toggle -->
+                <label
+                  for="themeToggle"
+                  class="themeToggle st-sunMoonThemeToggleBtn"
+                  type="checkbox"
+                >
+                  <input type="checkbox" id="themeToggle" class="themeToggleInput" aria-label="Toggle Dark Mode" />
+                  <svg
+                    width="40"
+                    height="40"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    stroke="none"
+                  >
+                    <mask id="moon-mask">
+                      <rect x="0" y="0" width="20" height="20" fill="white"></rect>
+                      <circle cx="11" cy="3" r="8" fill="black"></circle>
+                    </mask>
+                    <circle
+                      class="sunMoon"
+                      cx="10"
+                      cy="10"
+                      r="8"
+                      mask="url(#moon-mask)"
+                    ></circle>
+                    <g>
+                      <circle class="sunRay sunRay1" cx="18" cy="10" r="1.5"></circle>
+                      <circle class="sunRay sunRay2" cx="14" cy="16.928" r="1.5"></circle>
+                      <circle class="sunRay sunRay3" cx="6" cy="16.928" r="1.5"></circle>
+                      <circle class="sunRay sunRay4" cx="2" cy="10" r="1.5"></circle>
+                      <circle class="sunRay sunRay5" cx="6" cy="3.1718" r="1.5"></circle>
+                      <circle class="sunRay sunRay6" cx="14" cy="3.1718" r="1.5"></circle>
+                    </g>
+                  </svg>
+                </label>
+            </div>
         </div>
-        <nav class="top-app-bar__trailing">
-            <a href="#hero" class="m3-button m3-button--text">Home</a>
-            <a href="#features" class="m3-button m3-button--text">Features</a>
-            <a href="{{ url_for('auth.login') }}" class="m3-button m3-button--tonal">Log In</a>
-            <a href="{{ url_for('auth.register') }}" class="m3-button m3-button--filled">Sign Up</a>
-        </nav>
-    </div>
-</header>
+    </nav>
 {% endblock %}
 
 {% block content %}
-<main>
-    <!-- Hero Section -->
-    <section class="hero" id="hero">
-        <div class="hero__scrim"></div> <!-- Background overlay -->
-        <div class="hero__content">
-            <h1 class="display-large">Connect Beyond Boundaries</h1>
-            <p class="headline-small">Secure, real-time messaging powered by AI translation. Chat with anyone, anywhere, in any language.</p>
-            <div class="hero__actions">
-                <a href="{{ url_for('auth.register') }}" class="m3-button m3-button--filled m3-button--large">
-                    Get Started <i class="bi bi-arrow-right"></i>
-                </a>
-                <a href="#features" class="m3-button m3-button--outlined m3-button--large">
-                    Learn More
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features / Modules Grid -->
-    <section class="section features" id="features">
-        <div class="section__header">
-            <h2 class="display-small">Powerful Features</h2>
-            <p class="body-large">Everything you need for seamless communication.</p>
-        </div>
-        
-        <div class="card-grid">
-            <div class="m3-card m3-card--elevated">
-                <div class="m3-card__content">
-                    <i class="bi bi-translate m3-icon--large"></i>
-                    <h3 class="headline-small">Real-time Translation</h3>
-                    <p class="body-medium">Instant AI translation for over 100 languages. Break the language barrier effortlessy.</p>
+    <main>
+        <section class="hero-section" id="home">
+            <div class="hero-content">
+                <div class="hero-chip reveal">
+                    <i class='bx bxs-magic-wand'></i>
+                    <span>AI-Powered Translation</span>
+                </div>
+                <h1 class="display-large reveal-delay-1">Break Language Barriers<br>In Real-Time</h1>
+                <p class="headline-small reveal-delay-2">
+                    Experience seamless, secure, and instant multilingual communication with Connectly. 
+                    Chat globally, understand locally.
+                </p>
+                <div class="hero-buttons reveal-delay-3">
+                    <a href="{{ url_for('auth.register') }}" class="m3-btn filled-btn ripple" style="text-decoration: none;">
+                        Get Started
+                    </a>
+                    <a href="#features" class="m3-btn tonal-large ripple">
+                        Learn More
+                    </a>
                 </div>
             </div>
-
-            <div class="m3-card m3-card--elevated">
-                <div class="m3-card__content">
-                    <i class="bi bi-shield-lock m3-icon--large"></i>
-                    <h3 class="headline-small">Secure & Private</h3>
-                    <p class="body-medium">End-to-end encryption standards ensure your conversations remain private.</p>
+            <div class="hero-visual reveal-side">
+                <div class="app-mockup">
+                    <div class="mockup-header">
+                        <div class="dot"></div><div class="dot"></div>
+                    </div>
+                    <div class="mockup-body">
+                        <div class="msg received">Hola, ¿cómo estás? <span class="trans-badge">Spanish</span></div>
+                        <div class="msg sent">Hello! I am doing great. <span class="trans-badge">English</span></div>
+                        <div class="msg received">C'est fantastique! <span class="trans-badge">French</span></div>
+                    </div>
                 </div>
+            </div>
+        </section>
+
+        <section class="features-section" id="features">
+            <div class="section-header reveal">
+                <h2 class="display-medium">Why Connectly?</h2>
+                <p class="title-medium">Solving modern communication challenges.</p>
             </div>
             
-            <div class="m3-card m3-card--elevated">
-                <div class="m3-card__content">
-                    <i class="bi bi-people m3-icon--large"></i>
-                    <h3 class="headline-small">Group Dynamics</h3>
-                    <p class="body-medium">Create unlimited groups, share files, and collaborate in real-time.</p>
+            <div class="m3-grid">
+                <div class="m3-card elevated reveal">
+                    <div class="card-icon surface-variant">
+                        <i class='bx bx-globe'></i>
+                    </div>
+                    <h3 class="headline-small">Real-Time Translation</h3>
+                    <p class="body-large">Don't let language hold you back. Connectly translates messages instantly into your preferred language using deep learning.</p>
+                </div>
+                <div class="m3-card elevated reveal-delay-1">
+                    <div class="card-icon surface-variant">
+                        <i class='bx bxs-bolt'></i>
+                    </div>
+                    <h3 class="headline-small">Lightning Fast</h3>
+                    <p class="body-large">Optimized WebSocket connections ensure your messages deliver in milliseconds, keeping conversations flowing naturally.</p>
+                </div>
+                <div class="m3-card elevated reveal-delay-2">
+                    <div class="card-icon surface-variant">
+                        <i class='bx bx-shield-quarter'></i>
+                    </div>
+                    <h3 class="headline-small">Secure & Private</h3>
+                    <p class="body-large">Your conversations are yours alone. We prioritize security with encrypted sessions and protected user data.</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Tech Stack / Carousel -->
-    <section class="section tech-stack">
-        <h2 class="display-small text-center">Built With Modern Tech</h2>
-        <div class="carousel-container">
-            <!-- Reuse existing carousel logic but style it M3 -->
-            <div class="carousel-track">
-                <div class="tech-item"><i class="bi bi-google"></i><span>Google AI</span></div>
-                <div class="tech-item"><i class="bi bi-code-slash"></i><span>Python Flask</span></div>
-                <div class="tech-item"><i class="bi bi-database"></i><span>SQLite</span></div>
-                <div class="tech-item"><i class="bi bi-lightning"></i><span>Socket.IO</span></div>
+        <!-- Swapped: Powered By Section Positioned Here -->
+        <section class="highlight-section">
+            <div class="tech-marquee" style="background: transparent; border: none; padding: 0;">
+                 <h2 class="display-medium" style="text-align: left; margin-bottom: 40px; padding-left: 24px;">Powered By</h2>
+                <div class="marquee-track">
+                    <span><i class='bx bxl-python'></i> Python</span>
+                    <span><i class='bx bxs-flask'></i> Flask</span>
+                    <span><i class='bx bxs-plug'></i> Socket.IO</span>
+                    <span><i class='bx bx-world'></i> Deep Translator</span>
+                    <span><i class='bx bxl-bootstrap'></i> Bootstrap</span>
+                    <span><i class='bx bxs-data'></i> SQLite</span>
+                    
+                    <!-- Duplicated for Scroll -->
+                    <span><i class='bx bxl-python'></i> Python</span>
+                    <span><i class='bx bxs-flask'></i> Flask</span>
+                    <span><i class='bx bxs-plug'></i> Socket.IO</span>
+                    <span><i class='bx bx-world'></i> Deep Translator</span>
+                    <span><i class='bx bxl-bootstrap'></i> Bootstrap</span>
+                    <span><i class='bx bxs-data'></i> SQLite</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="modules-section">
+             <div class="section-header reveal">
+                <h2 class="display-medium">Explore Modules</h2>
+            </div>
+            <div class="modules-container">
+                <a href="{{ url_for('auth.login') }}" class="module-card reveal">
+                    <div class="module-image login-img"></div>
+                    <div class="module-content">
+                        <h3 class="title-large">Secure Login</h3>
+                        <p class="body-medium">Encrypted authentication entry point.</p>
+                        <span class="link-text" style="display: block; margin-top: auto;">
+                            <button class="m3-btn filled-btn ripple" style="width: 100%;">Access</button>
+                        </span>
+                    </div>
+                </a>
+                <a href="{{ url_for('chat.chat_list') }}" class="module-card reveal-delay-1">
+                    <div class="module-image chat-img"></div>
+                    <div class="module-content">
+                        <h3 class="title-large">Live Chat</h3>
+                        <p class="body-medium">The core messaging experience.</p>
+                        <span class="link-text" style="display: block; margin-top: auto;">
+                            <button class="m3-btn filled-btn ripple" style="width: 100%;">Launch</button>
+                        </span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Swapped: Optimized For Section Positioned Here -->
+        <section class="highlight-section">
+            <h2 class="display-medium" style="text-align: left; margin-bottom: 40px; padding-left: 24px;">Optimized For</h2>
+            <div class="specs-scroller reveal-up" style="justify-content: flex-start; padding-left: 24px; margin-top: 0;">
+                <div class="spec-chip">
+                    <i class='bx bx-chip'></i>
+                    4GB RAM
+                </div>
+                <div class="spec-chip">
+                    <i class='bx bx-tachometer'></i>
+                    Intel Core i3+
+                </div>
+                <div class="spec-chip">
+                    <i class='bx bx-terminal'></i>
+                    Linux / Windows
+                </div>
+                <div class="spec-chip">
+                    <i class='bx bx-cloud'></i>
+                    10 Mbps Net
+                </div>
+                <div class="spec-chip">
+                    <i class='bx bx-data'></i>
+                    SQLite Storage
+                </div>
+            </div>
+        </section>
+
+        <div class="pre-footer">
+            <div class="pf-brand">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="nav-logo" style="height: 32px;">
+                <span>Connectly</span>
+            </div>
+            <div class="pf-actions">
+               <a href="{{ url_for('auth.login') }}" class="m3-btn text-btn">Login</a>
+               <a href="{{ url_for('auth.register') }}" class="m3-btn filled-btn" style="border-radius: 9999px;">Register</a>
             </div>
         </div>
-    </section>
-</main>
-{% endblock %}
 
-{% block footer %}
-<footer class="m3-footer">
-    <div class="m3-footer__content">
-        <p class="body-small">© 2025 Connectly. Built by Bony Koshy.</p>
-        <div class="m3-footer__links">
-            <a href="#" class="m3-link">Privacy</a>
-            <a href="#" class="m3-link">Terms</a>
-            <a href="#" class="m3-link">Contact</a>
-        </div>
-    </div>
-</footer>
+        <hr class="footer-separator">
+
+        <footer class="m3-footer-main">
+            <div class="footer-copy">
+                <span>2025 © Connectly LLC</span>
+                <span class="footer-divider">|</span>
+                <a href="#">Privacy Policy</a>
+            </div>
+            <!-- Removed separate footer-links div to merge with copy -->
+            <div class="footer-socials">
+                <a href="#" class="social-icon" aria-label="Twitter"><i class='bx bxl-twitter'></i></a>
+                <a href="#" class="social-icon" aria-label="YouTube"><i class='bx bxl-youtube'></i></a>
+                <a href="#" class="social-icon" aria-label="Instagram"><i class='bx bxl-instagram'></i></a>
+                <a href="#" class="social-icon" aria-label="Facebook"><i class='bx bxl-facebook'></i></a>
+                <a href="#" class="social-icon" aria-label="LinkedIn"><i class='bx bxl-linkedin'></i></a>
+                <a href="#" class="social-icon" aria-label="GitHub"><i class='bx bxl-github'></i></a>
+            </div>
+            <div class="footer-lang">
+                <div class="custom-dropdown" id="languageDropdown">
+                    <div class="dropdown-selected">English</div>
+                    <div class="dropdown-options">
+                        {% include 'partials/language_options_custom.html' %}
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
 {% endblock %}
 
 {% block scripts %}
-<script type="module" src="{{ url_for('static', filename='js/index.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/landing_m3.js') }}"></script>
 {% endblock %}

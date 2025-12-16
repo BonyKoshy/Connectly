@@ -4,63 +4,70 @@
 
 /* Body Layout */
 body.auth-page {
-    background-color: var(--md-sys-color-background);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
+  background-color: var(--md-sys-color-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
 }
 
 /* Card Container */
 .form-container {
-    max-width: 400px;
-    width: 90%;
-    background-color: var(--md-sys-color-surface);
-    color: var(--md-sys-color-on-surface);
-    border-radius: var(--md-sys-shape-corner-xl); /* Expressive Corner */
-    box-shadow: var(--md-sys-elevation-2);
-    padding: 32px; /* Increased padding */
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+  max-width: 420px;
+  width: 90%;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  border-radius: var(--md-sys-shape-corner-extra-large); /* M3 XL Corner */
+  box-shadow: var(--md-sys-elevation-3); /* M3 Level 3 Elevation */
+  padding: 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border: 1px solid rgba(var(--md-sys-color-outline), 0.1); /* Subtle border for definition */
+}
+
+/* Dark Mode Border Adjustment */
+[data-theme="dark"] .form-container {
+  border: 1px solid rgba(255,255,255,0.08);
 }
 
 .title {
-    font-family: var(--md-sys-typescale-headline-large-font);
-    font-size: var(--md-sys-typescale-headline-large-size);
-    color: var(--md-sys-color-primary);
-    margin: 0 0 8px 0;
-    text-align: center;
+  font-family: var(--md-sys-typescale-headline-large-font);
+  font-size: 1.75rem; /* M3 Headline Small/Medium */
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface); /* Title usually matches text, or primary */
+  margin: 0 0 8px 0;
+  text-align: center;
 }
 
 /* Auth Specific Inputs overrides if any, otherwise inherits from style.css global inputs */
 .auth-form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .auth-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
 }
 
 .btn-block {
-    width: 100%;
+  width: 100%;
 }
 
 .auth-links {
-    text-align: center;
-    margin-top: 16px;
-    font-size: 14px;
-    color: var(--md-sys-color-on-surface-variant);
+  text-align: center;
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--md-sys-color-on-surface-variant);
 }
 
 .auth-links a {
-    color: var(--md-sys-color-primary);
-    font-weight: 500;
+  color: var(--md-sys-color-primary);
+  font-weight: 500;
 }

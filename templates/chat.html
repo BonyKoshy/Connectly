@@ -1,94 +1,107 @@
-{% extends 'base.html' %}
-
-{% block title %}Connectly Chat{% endblock %}
-{% block description %}Secure, real-time chat interface.{% endblock %}
-
-{% block body_class %}chat-app{% endblock %}
-{% block body_attrs %}data-username="{{ session['user'] }}"{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
-{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% block title %}Connectly Chat{% endblock %} {% block
+description %}Secure, real-time chat interface.{% endblock %} {% block
+body_class %}chat-app{% endblock %} {% block body_attrs %}data-username="{{
+session['user'] }}"{% endblock %} {% block extra_css %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/chat.css') }}"
+/>
+{% endblock %} {% block content %}
 <div class="chat-layout">
-    <!-- Sidebar / Navigation Rail -->
-    <aside class="chat-sidebar">
-        <div class="chat-sidebar__nav">
-            <a class="nav-item" href="{{ url_for('main.index') }}" title="Home">
-                <i class="bi bi-house-door nav-item__icon"></i>
-                <span class="nav-item__label">Home</span>
-            </a>
-            <a class="nav-item" href="{{ url_for('chat.chat_list') }}" title="Chats">
-                <i class="bi bi-chat-dots nav-item__icon"></i>
-                <span class="nav-item__label">Chats</span>
-            </a>
-            <a class="nav-item" href="{{ url_for('main.groups') }}" title="Groups">
-                <i class="bi bi-people nav-item__icon"></i>
-                <span class="nav-item__label">Groups</span>
-            </a>
-            <a class="nav-item" href="{{ url_for('main.filetransfer') }}" title="Files">
-                <i class="bi bi-folder2-open nav-item__icon"></i>
-                <span class="nav-item__label">Files</span>
-            </a>
-        </div>
-        
-        <div class="chat-sidebar__bottom">
-            <a class="nav-item nav-item--active" href="{{ url_for('main.profile') }}" title="Profile">
-                <div class="avatar avatar--small">{{ username[0]|upper }}</div>
-                <span class="nav-item__label">{{ username }}</span>
-            </a>
-            <a class="nav-item" href="{{ url_for('auth.logout') }}" title="Logout">
-                <i class="bi bi-box-arrow-right nav-item__icon"></i>
-                <span class="nav-item__label">Logout</span>
-            </a>
-        </div>
-    </aside>
-    
-    <!-- Main Content Area -->
-    <main class="chat-main">
-        <!-- Chat Header -->
-        <header class="chat-header">
-            <div class="chat-header__info">
-                <div class="avatar avatar--medium">
-                    <i class="bi bi-person"></i>
-                </div>
-                <h2 class="chat-header__title" id="chat-name">{{ receiver_name }}</h2>
-            </div>
-            <div class="chat-header__actions">
-                <button class="icon-button"><i class="bi bi-telephone"></i></button>
-                <button class="icon-button"><i class="bi bi-three-dots-vertical"></i></button>
-            </div>
-        </header>
-  
-        <!-- Chat Messages -->
-        <div class="chat-content" id="messages-container">
-            <!-- Messages will be injected here via JS -->
-            <div class="toast-notification" id="toast" style="display: none;">
-                User has joined the room
-            </div>
-        </div>
+  <!-- Sidebar / Navigation Rail -->
+  <aside class="chat-sidebar">
+    <div class="chat-sidebar__nav">
+      <a class="nav-item" href="{{ url_for('main.index') }}" title="Home">
+        <i class="bi bi-house-door nav-item__icon"></i>
+        <span class="nav-item__label">Home</span>
+      </a>
+      <a class="nav-item" href="{{ url_for('chat.chat_list') }}" title="Chats">
+        <i class="bi bi-chat-dots nav-item__icon"></i>
+        <span class="nav-item__label">Chats</span>
+      </a>
+      <a class="nav-item" href="{{ url_for('main.groups') }}" title="Groups">
+        <i class="bi bi-people nav-item__icon"></i>
+        <span class="nav-item__label">Groups</span>
+      </a>
+      <a
+        class="nav-item"
+        href="{{ url_for('main.filetransfer') }}"
+        title="Files"
+      >
+        <i class="bi bi-folder2-open nav-item__icon"></i>
+        <span class="nav-item__label">Files</span>
+      </a>
+    </div>
 
-        <!-- Input Area -->
-        <footer class="chat-input-area">
-            <div class="message-bar">
-                <button class="icon-button" title="Attach File">
-                    <i class="bi bi-plus-circle"></i>
-                </button>
-                <input type="file" id="file" hidden>
-                
-                <input type="text" id="messageInput" class="message-input" placeholder="Type a message..." aria-label="Type a message">
-                
-                <button id="sendButton" class="send-button">
-                    <i class="bi bi-send-fill"></i>
-                </button>
-            </div>
-        </footer>
-    </main>
+    <div class="chat-sidebar__bottom">
+      <a
+        class="nav-item nav-item--active"
+        href="{{ url_for('main.profile') }}"
+        title="Profile"
+      >
+        <div class="avatar avatar--small">{{ username[0]|upper }}</div>
+        <span class="nav-item__label">{{ username }}</span>
+      </a>
+      <a class="nav-item" href="{{ url_for('auth.logout') }}" title="Logout">
+        <i class="bi bi-box-arrow-right nav-item__icon"></i>
+        <span class="nav-item__label">Logout</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="chat-main">
+    <!-- Chat Header -->
+    <header class="chat-header">
+      <div class="chat-header__info">
+        <div class="avatar avatar--medium">
+          <i class="bi bi-person"></i>
+        </div>
+        <h2 class="chat-header__title" id="chat-name">{{ receiver_name }}</h2>
+      </div>
+      <div class="chat-header__actions">
+        <button class="icon-button"><i class="bi bi-telephone"></i></button>
+        <button class="icon-button">
+          <i class="bi bi-three-dots-vertical"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Chat Messages -->
+    <div class="chat-content" id="messages-container">
+      <!-- Messages will be injected here via JS -->
+      <div class="toast-notification" id="toast" style="display: none">
+        User has joined the room
+      </div>
+    </div>
+
+    <!-- Input Area -->
+    <footer class="chat-input-area">
+      <div class="message-bar">
+        <button class="icon-button" title="Attach File">
+          <i class="bi bi-plus-circle"></i>
+        </button>
+        <input type="file" id="file" hidden />
+
+        <input
+          type="text"
+          id="messageInput"
+          class="message-input"
+          placeholder="Type a message..."
+          aria-label="Type a message"
+        />
+
+        <button id="sendButton" class="send-button">
+          <i class="bi bi-send-fill"></i>
+        </button>
+      </div>
+    </footer>
+  </main>
 </div>
-{% endblock %}
-
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-<script type="module" src="{{ url_for('static', filename='js/chats.js') }}"></script>
+<script
+  type="module"
+  src="{{ url_for('static', filename='js/chats.js') }}"
+></script>
 {% endblock %}
