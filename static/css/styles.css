@@ -1,0 +1,363 @@
+/* Material 3 Stylesheet */
+
+/* Global Reset & Typography */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--md-sys-typescale-body-large-font);
+    font-size: var(--md-sys-typescale-body-large-size);
+    font-weight: var(--md-sys-typescale-body-large-weight);
+    background-color: var(--md-sys-color-background);
+    color: var(--md-sys-color-on-background);
+    transition: background-color var(--md-sys-motion-duration-short), color var(--md-sys-motion-duration-short);
+    height: 100vh;
+    overflow: hidden;
+    line-height: 1.5;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Material Symbols */
+.material-symbols-rounded {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-size: 24px;
+}
+.material-symbols-rounded.filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.text-primary { color: var(--md-sys-color-primary); }
+
+/* Layouts */
+.app-background {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 16px;
+    background-color: var(--md-sys-color-surface-variant);
+}
+
+.app-layout {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+/* Auth Components */
+.md-card {
+    background-color: var(--md-sys-color-surface);
+    border-radius: var(--md-sys-shape-corner-extra-large);
+    padding: 32px;
+    box-shadow: var(--md-sys-elevation-level1);
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.card-header { text-align: center; }
+.card-header h1 { font-size: 2rem; color: var(--md-sys-color-on-surface); margin-bottom: 8px;}
+.card-header p { color: var(--md-sys-color-on-surface-variant); }
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Inputs */
+.md-input-group {
+    position: relative;
+    background-color: var(--md-sys-color-surface-variant);
+    border-radius: 4px 4px 0 0;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--md-sys-color-outline);
+    transition: border-bottom-color 0.2s;
+}
+
+.md-input-group:focus-within {
+    border-bottom: 2px solid var(--md-sys-color-primary);
+}
+
+.input-icon {
+    padding: 0 12px;
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+.md-input {
+    flex: 1;
+    background: none;
+    border: none;
+    height: 100%;
+    padding: 20px 16px 6px 0;
+    font-size: 16px;
+    color: var(--md-sys-color-on-surface);
+    outline: none;
+    z-index: 1;
+}
+
+.md-label {
+    position: absolute;
+    left: 48px; /* icon width + padding */
+    top: 18px;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 16px;
+    pointer-events: none;
+    transition: 0.2s ease all;
+}
+
+.md-input:focus ~ .md-label,
+.md-input:not(:placeholder-shown) ~ .md-label {
+    top: 6px;
+    font-size: 12px;
+    color: var(--md-sys-color-primary);
+}
+
+/* Buttons */
+.md-btn {
+    height: 40px;
+    padding: 0 24px;
+    border-radius: 20px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-image 0s; /* Ripple shim handled by active state */
+}
+.md-btn:active { opacity: 0.8; }
+
+.md-btn-filled {
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+}
+
+.md-icon-btn {
+    width: 40px; /* Standard touch target 48 ideally, 40 visual */
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    color: var(--md-sys-color-on-surface-variant);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.md-icon-btn:hover { background-color: rgba(var(--md-sys-color-on-surface-variant), 0.08); }
+.md-icon-btn.active { color: var(--md-sys-color-primary); background-color: var(--md-sys-color-secondary-container); }
+
+.md-fab {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--md-sys-elevation-level3);
+}
+.md-fab-small { width: 40px; height: 40px; border-radius: 12px; }
+
+/* Navigation Rail (Desktop) */
+.md-navigation-rail {
+    width: 80px;
+    background-color: var(--md-sys-color-surface);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 0;
+    border-right: 1px solid var(--md-sys-color-outline-variant);
+    z-index: 100;
+    transition: width 0.3s ease;
+}
+
+.nav-header { margin-bottom: 24px; display: flex; flex-direction: column; gap:12px; align-items: center;}
+
+.nav-destinations {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    align-items: center;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 56px;
+    cursor: pointer;
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+.nav-icon-container {
+    width: 56px;
+    height: 32px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.nav-item:hover .nav-icon-container { background-color: var(--md-sys-color-surface-variant); }
+.nav-item.active .nav-icon-container { background-color: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); }
+.nav-item.active .nav-label { font-weight: 600; color: var(--md-sys-color-on-surface); }
+
+.nav-label { font-size: 12px; text-align: center; }
+
+.nav-footer { margin-top: auto; display: flex; flex-direction: column; gap: 12px; }
+
+/* Main Area */
+.md-main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--md-sys-color-background);
+    position: relative;
+    overflow: hidden;
+}
+
+.md-top-app-bar {
+    height: 64px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--md-sys-color-surface);
+}
+
+.app-bar-leading { display: flex; flex-direction: column; }
+.md-title-large { font-size: 22px; font-weight: 400; }
+.connection-badge { font-size: 12px; display: flex; align-items: center; gap: 4px; color: var(--md-sys-color-tertiary); }
+.status-dot { width: 8px; height: 8px; background-color: #4cd964; border-radius: 50%; }
+
+/* Chat Surface */
+.chat-surface {
+    flex: 1;
+    border-radius: 24px 24px 0 0; /* Modern look */
+    background-color: var(--md-sys-color-surface); /* or Variant? */
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0 8px; /* Gutter */
+}
+
+.chat-bubble {
+    max-width: 70%;
+    padding: 12px 16px;
+    border-radius: 16px;
+    position: relative;
+    word-wrap: break-word;
+}
+.chat-bubble.sent {
+    align-self: flex-end;
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    border-bottom-right-radius: 4px;
+}
+.chat-bubble.received {
+    align-self: flex-start;
+    background-color: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+    border-bottom-left-radius: 4px;
+}
+
+.bubble-meta { font-size: 10px; opacity: 0.7; margin-top: 4px; text-align: right; }
+
+/* Input Region */
+.chat-input-region {
+    padding: 16px;
+    background-color: var(--md-sys-color-surface); /* matching surrounding */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.input-field-container {
+    flex: 1;
+    background-color: var(--md-sys-color-surface-variant);
+    border-radius: 28px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+}
+
+.chat-input-text {
+    flex: 1;
+    border: none;
+    background: none;
+    height: 100%;
+    padding: 0 8px;
+    font-size: 16px;
+    color: var(--md-sys-color-on-surface-variant);
+    outline: none;
+}
+.input-action { color: var(--md-sys-color-on-surface-variant); }
+
+/* Utility */
+.md-banner {
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--md-sys-color-error-container);
+    color: var(--md-sys-color-on-error-container);
+    font-size: 14px;
+}
+.md-link { color: var(--md-sys-color-primary); font-weight: 500; }
+
+/* Mobile Response */
+@media (max-width: 600px) {
+    .md-navigation-rail {
+        display: none; /* Hide rail, show bottom bar or drawer */
+        /* For this speedy refactor, let's turn it into a Navigation Drawer hidden by default */
+        position: fixed;
+        left: -100%;
+        height: 100%;
+        width: 300px; /* Modal drawer width */
+        border-right: none;
+        box-shadow: var(--md-sys-elevation-level2);
+        align-items: flex-start; /* Align contents left */
+        padding: 16px;
+    }
+    
+    .md-navigation-rail.active {
+        left: 0;
+    }
+    
+    .nav-destinations { align-items: flex-start; }
+    .nav-item { flex-direction: row; width: 100%; height: 56px; padding-left: 12px; }
+    .nav-label { font-size: 14px; }
+    
+    .chat-surface { margin: 0; border-radius: 0; }
+}

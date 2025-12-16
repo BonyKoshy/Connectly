@@ -1,42 +1,98 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block title %}Connectly - Register{% endblock %} {%
+block content %}
+<div
+  class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-[url('/static/images/bg.jpeg')] bg-cover bg-center relative"
+>
+  <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-sm"></div>
 
-{% block title %}Connectly - Register{% endblock %}
-{% block description %}Create a new Connectly account to start chatting seamlessly.{% endblock %}
+  <div
+    class="max-w-md w-full space-y-8 relative z-10 bg-surface/80 p-8 rounded-2xl border border-slate-700 shadow-2xl backdrop-blur-md"
+  >
+    <div class="text-center">
+      <h2 class="mt-6 text-3xl font-extrabold text-white">Create Account</h2>
+      <p class="mt-2 text-sm text-slate-400">Join the global conversation</p>
+    </div>
 
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
-{% endblock %}
-
-{% block body_class %}auth-page{% endblock %}
-
-{% block content %}
-<main class="form-container">
-    <p class="title">Register</p>
-    <form class="form" method="POST" action="{{ url_for('auth.register') }}">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <div class="input-group">
-            <input type="text" name="username" id="username" placeholder=" " required>
-            <label for="username">Username</label>
+    <form
+      class="mt-8 space-y-6"
+      action="{{ url_for('auth.register') }}"
+      method="POST"
+    >
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <div class="space-y-4">
+        <div class="relative">
+          <input
+            id="username"
+            name="username"
+            type="text"
+            required
+            class="peer w-full px-4 py-3 rounded-lg bg-slate-900 border border-slate-600 text-white placeholder-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+            placeholder="Username"
+          />
+          <label
+            for="username"
+            class="absolute left-4 -top-2.5 bg-surface px-1 text-xs text-primary transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-slate-400 peer-placeholder-shown:top-3.5 peer-focus:-top-2.5 peer-focus:text-primary peer-focus:text-xs"
+            >Username</label
+          >
         </div>
-        <div class="input-group">
-            <input type="password" name="password" id="password" placeholder=" " required>
-            <label for="password">Password</label>
-        </div>
-        <div class="input-group">
-            <select name="language" id="language" class="language-select" required>
-                {% include 'partials/language_options.html' %}
-            </select>
-            <label for="language">Preferred Language</label>
+        <div class="relative">
+          <input
+            id="password"
+            name="password"
+            type="password"
+            required
+            class="peer w-full px-4 py-3 rounded-lg bg-slate-900 border border-slate-600 text-white placeholder-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+            placeholder="Password"
+          />
+          <label
+            for="password"
+            class="absolute left-4 -top-2.5 bg-surface px-1 text-xs text-primary transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-slate-400 peer-placeholder-shown:top-3.5 peer-focus:-top-2.5 peer-focus:text-primary peer-focus:text-xs"
+            >Password</label
+          >
         </div>
 
-        <button class="sign" id="register" type="submit">Register</button>
+        <div class="relative">
+          <select
+            name="language"
+            id="language"
+            required
+            class="peer w-full px-4 py-3 rounded-lg bg-slate-900 border border-slate-600 text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all appearance-none"
+          >
+            {% include 'partials/language_options.html' %}
+          </select>
+          <label
+            for="language"
+            class="absolute left-4 -top-2.5 bg-surface px-1 text-xs text-primary"
+            >Preferred Language</label
+          >
+          <div
+            class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-slate-400"
+          >
+            <i class="bx bx-chevron-down"></i>
+          </div>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-primary hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all shadow-lg shadow-indigo-500/30"
+      >
+        Register
+      </button>
+
+      <div class="text-center text-sm">
+        <p class="text-slate-400">
+          Already have an account?
+          <a
+            href="{{ url_for('auth.login') }}"
+            class="font-medium text-primary hover:text-indigo-400 transition-colors"
+            >Login</a
+          >
+        </p>
+      </div>
     </form>
-    <p class="signup">Already have an account?
-        <a rel="noopener noreferrer" href="{{ url_for('auth.login') }}">Login</a>
-    </p>
-</main>
-{% endblock %}
-
-{% block scripts %}
+  </div>
+</div>
+{% endblock %} {% block scripts %}
 <script src="{{ url_for('static', filename='js/register.js') }}"></script>
 {% endblock %}

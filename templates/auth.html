@@ -1,0 +1,349 @@
+{% extends 'base.html' %} {% block title %}Connectly - Access{% endblock %} {%
+block navbar %}{% endblock %} {% block content %}
+<div
+  class="container relative min-h-screen w-full bg-slate-900 overflow-hidden flex items-center justify-center"
+>
+  <div
+    class="blob absolute top-[-10%] right-[48%] w-[2000px] h-[2000px] rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 transition-transform duration-[1800ms] ease-in-out z-[6] transform translate-y-[-50%]"
+  ></div>
+
+  <div class="forms-container absolute w-full h-full top-0 left-0">
+    <div
+      class="signin-signup absolute top-1/2 left-[75%] w-1/2 -translate-x-1/2 -translate-y-1/2 grid grid-cols-1 z-[5] transition-all duration-[1000ms] ease-in-out"
+    >
+      <form
+        action="{{ url_for('auth.login') }}"
+        method="POST"
+        class="sign-in-form flex flex-col items-center justify-center px-[5rem] py-0 overflow-hidden col-start-1 col-end-2 row-start-1 row-end-2 transition-all duration-[200ms] delay-[700ms] z-[2]"
+      >
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+        <h2 class="text-3xl font-bold text-white mb-6 font-['Inter']">
+          Sign in
+        </h2>
+
+        <div
+          class="input-field max-w-[380px] w-full bg-slate-800 my-[10px] h-[55px] rounded-[55px] grid grid-cols-[15%_85%] px-[0.4rem] relative overflow-hidden group focus-within:ring-2 focus-within:ring-indigo-500 transition-all"
+        >
+          <i
+            class="bx bxs-user flex items-center justify-center text-slate-400 text-xl transition-colors group-focus-within:text-indigo-400"
+          ></i>
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            required
+            class="bg-transparent border-none outline-none text-lg text-white font-semibold placeholder-slate-500 h-full w-full"
+          />
+        </div>
+
+        <div
+          class="input-field max-w-[380px] w-full bg-slate-800 my-[10px] h-[55px] rounded-[55px] grid grid-cols-[15%_85%] px-[0.4rem] relative overflow-hidden group focus-within:ring-2 focus-within:ring-indigo-500 transition-all"
+        >
+          <i
+            class="bx bxs-lock-alt flex items-center justify-center text-slate-400 text-xl transition-colors group-focus-within:text-indigo-400"
+          ></i>
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+            class="bg-transparent border-none outline-none text-lg text-white font-semibold placeholder-slate-500 h-full w-full"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="btn w-[150px] bg-indigo-600 border-none outline-none h-[49px] rounded-[49px] text-white uppercase font-bold my-[10px] cursor-pointer hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-500/30"
+        >
+          Login
+        </button>
+      </form>
+
+      <form
+        action="{{ url_for('auth.register') }}"
+        method="POST"
+        class="sign-up-form flex flex-col items-center justify-center px-[5rem] py-0 overflow-hidden col-start-1 col-end-2 row-start-1 row-end-2 transition-all duration-[200ms] delay-[700ms] opacity-0 z-[1]"
+      >
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+        <h2 class="text-3xl font-bold text-white mb-6 font-['Inter']">
+          Sign up
+        </h2>
+
+        <div
+          class="input-field max-w-[380px] w-full bg-slate-800 my-[10px] h-[55px] rounded-[55px] grid grid-cols-[15%_85%] px-[0.4rem] relative overflow-hidden group focus-within:ring-2 focus-within:ring-indigo-500 transition-all"
+        >
+          <i
+            class="bx bxs-user flex items-center justify-center text-slate-400 text-xl transition-colors group-focus-within:text-indigo-400"
+          ></i>
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            required
+            class="bg-transparent border-none outline-none text-lg text-white font-semibold placeholder-slate-500 h-full w-full"
+          />
+        </div>
+
+        <div
+          class="input-field max-w-[380px] w-full bg-slate-800 my-[10px] h-[55px] rounded-[55px] grid grid-cols-[15%_85%] px-[0.4rem] relative overflow-hidden group focus-within:ring-2 focus-within:ring-indigo-500 transition-all"
+        >
+          <i
+            class="bx bxs-lock-alt flex items-center justify-center text-slate-400 text-xl transition-colors group-focus-within:text-indigo-400"
+          ></i>
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+            class="bg-transparent border-none outline-none text-lg text-white font-semibold placeholder-slate-500 h-full w-full"
+          />
+        </div>
+
+        <div
+          class="input-field max-w-[380px] w-full bg-slate-800 my-[10px] h-[55px] rounded-[55px] grid grid-cols-[15%_85%] px-[0.4rem] relative overflow-hidden group focus-within:ring-2 focus-within:ring-indigo-500 transition-all"
+        >
+          <i
+            class="bx bxs-globe flex items-center justify-center text-slate-400 text-xl transition-colors group-focus-within:text-indigo-400"
+          ></i>
+          <div class="relative h-full w-full">
+            <select
+              name="language"
+              required
+              class="appearance-none bg-transparent border-none outline-none text-lg text-white font-semibold h-full w-full px-2 cursor-pointer"
+            >
+              {% include 'partials/language_options.html' %}
+            </select>
+            <div
+              class="pointer-events-none absolute inset-y-0 right-4 flex items-center px-2 text-slate-400"
+            >
+              <i class="bx bx-chevron-down"></i>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="btn w-[150px] bg-indigo-600 border-none outline-none h-[49px] rounded-[49px] text-white uppercase font-bold my-[10px] cursor-pointer hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-500/30"
+        >
+          Sign Up
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div
+    class="panels-container absolute w-full h-full top-0 left-0 grid grid-cols-2"
+  >
+    <div
+      class="panel left-panel flex flex-col items-end justify-around text-center z-[6] pt-[3rem] px-[17%] pb-[2rem] pointer-events-auto"
+    >
+      <div
+        class="content text-white transition-transform duration-[900ms] delay-[600ms] flex flex-col items-center"
+      >
+        <h3 class="font-bold text-2xl mb-2">New here?</h3>
+        <p class="text-sm py-2 mb-4 opacity-80">
+          Enter your details and start your journey with us
+        </p>
+        <button
+          id="sign-up-btn"
+          class="btn bg-transparent border-2 border-white rounded-[49px] w-[130px] h-[41px] font-semibold text-sm hover:bg-white hover:text-indigo-600 transition-colors uppercase"
+        >
+          Sign up
+        </button>
+      </div>
+      <img
+        src="{{ url_for('static', filename='images/log.svg') }}"
+        class="image w-full transition-transform duration-[1100ms] delay-[400ms]"
+        alt="Log in"
+      />
+    </div>
+
+    <div
+      class="panel right-panel flex flex-col items-start justify-around text-center z-[6] pt-[3rem] px-[12%] pb-[2rem] pointer-events-none"
+    >
+      <div
+        class="content text-white transition-transform duration-[900ms] delay-[600ms] flex flex-col items-center transform translate-x-[800px]"
+      >
+        <h3 class="font-bold text-2xl mb-2">One of us?</h3>
+        <p class="text-sm py-2 mb-4 opacity-80">
+          To keep connected with us please login with your personal info
+        </p>
+        <button
+          id="sign-in-btn"
+          class="btn bg-transparent border-2 border-white rounded-[49px] w-[130px] h-[41px] font-semibold text-sm hover:bg-white hover:text-indigo-600 transition-colors uppercase"
+        >
+          Sign in
+        </button>
+      </div>
+      <img
+        src="{{ url_for('static', filename='images/register.svg') }}"
+        class="image w-full transition-transform duration-[1100ms] delay-[400ms] transform translate-x-[800px]"
+        alt="Register"
+      />
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Custom Animations for Sliding Logic 
+       (Tailwind doesn't natively support these specific complex transforms easily)
+    */
+  .container.sign-up-mode .blob {
+    transform: translate(100%, -50%);
+    right: 52%;
+  }
+
+  .container.sign-up-mode .signin-signup {
+    left: 25%;
+  }
+
+  .container.sign-up-mode .sign-up-form {
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .container.sign-up-mode .sign-in-form {
+    opacity: 0;
+    z-index: 1;
+  }
+
+  .container.sign-up-mode .left-panel {
+    pointer-events: none;
+  }
+
+  .container.sign-up-mode .right-panel {
+    pointer-events: all;
+  }
+
+  .container.sign-up-mode .left-panel .image,
+  .container.sign-up-mode .left-panel .content {
+    transform: translateX(-800px);
+  }
+
+  .container.sign-up-mode .right-panel .image,
+  .container.sign-up-mode .right-panel .content {
+    transform: translateX(0%);
+  }
+
+  /* Responsive Design (converted from your CSS) */
+  @media (max-width: 870px) {
+    .container {
+      min-height: 800px;
+      height: 100vh;
+    }
+    .signin-signup {
+      width: 100%;
+      top: 95%;
+      transform: translate(-50%, -100%);
+      left: 50%;
+    }
+    .container.sign-up-mode .signin-signup {
+      left: 50%;
+    }
+    .panels-container {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 2fr 1fr;
+    }
+    .panel {
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      padding: 2.5rem 8%;
+      grid-column: 1 / 2;
+    }
+    .right-panel {
+      grid-row: 3 / 4;
+    }
+    .left-panel {
+      grid-row: 1 / 2;
+    }
+    .image {
+      width: 200px;
+    }
+    .panel .content {
+      padding-right: 15%;
+    }
+    .container .blob {
+      width: 1500px;
+      height: 1500px;
+      transform: translateX(-50%);
+      left: 30%;
+      bottom: 68%;
+      right: initial;
+      top: initial;
+    }
+    .container.sign-up-mode .blob {
+      transform: translate(-50%, 100%);
+      bottom: 32%;
+      right: initial;
+    }
+    .container.sign-up-mode .left-panel .image,
+    .container.sign-up-mode .left-panel .content {
+      transform: translateY(-300px);
+    }
+    .container.sign-up-mode .right-panel .image,
+    .container.sign-up-mode .right-panel .content {
+      transform: translateY(0px);
+    }
+    .right-panel .image,
+    .right-panel .content {
+      transform: translateY(300px);
+    }
+    .container.sign-up-mode .signin-signup {
+      top: 5%;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  @media (max-width: 570px) {
+    .sign-in-form,
+    .sign-up-form {
+      padding: 0 1.5rem;
+    }
+    .image {
+      display: none;
+    }
+    .panel .content {
+      padding: 0.5rem 1rem;
+    }
+    .container {
+      padding: 1.5rem;
+    }
+    .container .blob {
+      bottom: 72%;
+      left: 50%;
+    }
+    .container.sign-up-mode .blob {
+      bottom: 28%;
+      left: 50%;
+    }
+  }
+</style>
+
+<script>
+  const sign_in_btn = document.querySelector("#sign-in-btn");
+  const sign_up_btn = document.querySelector("#sign-up-btn");
+  const container = document.querySelector(".container");
+
+  sign_up_btn.addEventListener("click", () => {
+    container.classList.add("sign-up-mode");
+  });
+
+  sign_in_btn.addEventListener("click", () => {
+    container.classList.remove("sign-up-mode");
+  });
+
+  window.addEventListener("load", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    // Automatically switch to Sign Up mode if URL contains 'register'
+    if (
+      window.location.pathname.includes("register") ||
+      urlParams.get("mode") === "signup"
+    ) {
+      container.classList.add("sign-up-mode");
+    }
+  });
+</script>
+{% endblock %}

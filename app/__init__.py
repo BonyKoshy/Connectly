@@ -42,7 +42,17 @@ def create_app(config_name='default'):
         
     @app.after_request
     def add_security_headers(response):
-        response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.jsdelivr.net https://www.google.com https://www.gstatic.com https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com https://translate.googleapis.com https://www.gstatic.com; font-src 'self' https://cdn.jsdelivr.net https://unpkg.com https://fonts.gstatic.com; connect-src 'self' https://translate.googleapis.com https://translate-pa.googleapis.com; frame-src 'self' https://www.google.com; img-src 'self' data: https://www.google.com https://www.gstatic.com https://translate.googleapis.com https://fonts.gstatic.com; object-src 'none';"
+        # Added 'https://cdn.tailwindcss.com' to script-src and style-src
+        response.headers['Content-Security-Policy'] = (
+            "default-src 'self'; "
+            "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.jsdelivr.net https://www.google.com https://www.gstatic.com https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://cdn.tailwindcss.com; "
+            "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com https://translate.googleapis.com https://www.gstatic.com https://cdn.tailwindcss.com; "
+            "font-src 'self' https://cdn.jsdelivr.net https://unpkg.com https://fonts.gstatic.com; "
+            "connect-src 'self' https://translate.googleapis.com https://translate-pa.googleapis.com; "
+            "frame-src 'self' https://www.google.com; "
+            "img-src 'self' data: https://www.google.com https://www.gstatic.com https://translate.googleapis.com https://fonts.gstatic.com; "
+            "object-src 'none';"
+        )
         response.headers['X-Content-Type-Options'] = 'nosniff'
         response.headers['X-Frame-Options'] = 'SAMEORIGIN'
         response.headers['X-XSS-Protection'] = '1; mode=block'

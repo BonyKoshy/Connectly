@@ -1,259 +1,664 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block title %}Connectly - AI-Powered Chat{%
+endblock %} {% block description %}Connectly - AI-Powered Chat Platform. Chat
+globally, understand locally with real-time translation and secure messaging.{%
+endblock %} {% block navbar %}
+<nav
+  class="fixed w-full z-50 top-0 start-0 border-b border-gray-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md transition-all duration-300"
+  id="navbar"
+>
+  <div
+    class="max-w-7xl flex flex-wrap items-center justify-between mx-auto p-4"
+  >
+    <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse group">
+      <img
+        src="{{ url_for('static', filename='images/logo.webp') }}"
+        class="h-10 w-auto transition-all duration-300"
+        id="nav-logo"
+        alt="Connectly Logo"
+      />
+      <span
+        class="self-center text-2xl font-bold whitespace-nowrap text-slate-800 dark:text-white tracking-tight transition-colors"
+        >Connectly</span
+      >
+    </a>
 
-{% block html_attrs %}data-theme="dark"{% endblock %}
+    <div class="flex items-center space-x-4">
+      <div id="google_translate_element" class="hidden md:block"></div>
 
-{% block title %}Connectly - AI-Powered Chat{% endblock %}
-{% block description %}Connectly - AI-Powered Chat Platform. Chat globally, understand locally with real-time translation and secure messaging.{% endblock %}
+      <label
+        for="themeToggle"
+        class="themeToggle st-sunMoonThemeToggleBtn relative inline-block w-10 h-10 cursor-pointer"
+        type="checkbox"
+      >
+        <input
+          type="checkbox"
+          id="themeToggle"
+          class="themeToggleInput sr-only"
+          aria-label="Toggle Dark Mode"
+        />
+        <svg
+          width="40"
+          height="40"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          stroke="none"
+          class="text-slate-800 dark:text-white transition-colors"
+        >
+          <mask id="moon-mask">
+            <rect x="0" y="0" width="20" height="20" fill="white"></rect>
+            <circle cx="11" cy="3" r="8" fill="black"></circle>
+          </mask>
+          <circle
+            class="sunMoon origin-center transition-transform duration-500"
+            cx="10"
+            cy="10"
+            r="8"
+            mask="url(#moon-mask)"
+          ></circle>
+          <g
+            class="sunRays opacity-0 dark:opacity-100 transition-opacity duration-500"
+          >
+            <circle class="sunRay sunRay1" cx="18" cy="10" r="1.5"></circle>
+            <circle class="sunRay sunRay2" cx="14" cy="16.928" r="1.5"></circle>
+            <circle class="sunRay sunRay3" cx="6" cy="16.928" r="1.5"></circle>
+            <circle class="sunRay sunRay4" cx="2" cy="10" r="1.5"></circle>
+            <circle class="sunRay sunRay5" cx="6" cy="3.1718" r="1.5"></circle>
+            <circle class="sunRay sunRay6" cx="14" cy="3.1718" r="1.5"></circle>
+          </g>
+        </svg>
+      </label>
 
-{% block extra_meta %}
-<link rel="preload" href="{{ url_for('static', filename='css/landing_m3.css') }}" as="style">
-<link rel="preload" href="{{ url_for('static', filename='images/logo.webp') }}" as="image">
-{% endblock %}
+      <div class="hidden md:flex space-x-2">
+        <a
+          href="{{ url_for('auth.login') }}"
+          class="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5 font-medium rounded-full text-sm px-5 py-2.5 text-center transition-all"
+          >Login</a
+        >
+        <a
+          href="{{ url_for('auth.register') }}"
+          class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-800 font-medium rounded-full text-sm px-5 py-2.5 text-center shadow-lg shadow-indigo-500/30 transition-all transform hover:-translate-y-0.5"
+          >Get Started</a
+        >
+      </div>
+    </div>
+  </div>
+</nav>
+{% endblock %} {% block content %}
+<main
+  class="overflow-x-hidden pt-20 bg-gray-50 dark:bg-slate-950 transition-colors duration-300"
+>
+  <section
+    class="relative min-h-[90vh] flex items-center py-20 lg:py-0 overflow-hidden"
+    id="home"
+  >
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
+      <div
+        class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-400/30 dark:bg-purple-600/20 rounded-full blur-[100px]"
+      ></div>
+      <div
+        class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-indigo-400/30 dark:bg-indigo-600/20 rounded-full blur-[100px]"
+      ></div>
+    </div>
 
-{% block extra_css %}
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing_m3.css') }}">
-{% endblock %}
-
-{% block navbar %}
-    <nav class="m3-navbar">
-        <div id="google_translate_element" style="display:none"></div>
-        <div class="nav-container">
-            <a href="#" class="brand-logo" aria-label="Connectly Home">
-                <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Connectly Logo" class="nav-logo" width="40" height="40" style="height: 40px; width: auto;">
-                Connectly
-            </a>
-            <div class="nav-actions">
-                <!-- Dark Mode Toggle -->
-                <label
-                  for="themeToggle"
-                  class="themeToggle st-sunMoonThemeToggleBtn"
-                  type="checkbox"
-                >
-                  <input type="checkbox" id="themeToggle" class="themeToggleInput" aria-label="Toggle Dark Mode" />
-                  <svg
-                    width="40"
-                    height="40"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    stroke="none"
-                  >
-                    <mask id="moon-mask">
-                      <rect x="0" y="0" width="20" height="20" fill="white"></rect>
-                      <circle cx="11" cy="3" r="8" fill="black"></circle>
-                    </mask>
-                    <circle
-                      class="sunMoon"
-                      cx="10"
-                      cy="10"
-                      r="8"
-                      mask="url(#moon-mask)"
-                    ></circle>
-                    <g>
-                      <circle class="sunRay sunRay1" cx="18" cy="10" r="1.5"></circle>
-                      <circle class="sunRay sunRay2" cx="14" cy="16.928" r="1.5"></circle>
-                      <circle class="sunRay sunRay3" cx="6" cy="16.928" r="1.5"></circle>
-                      <circle class="sunRay sunRay4" cx="2" cy="10" r="1.5"></circle>
-                      <circle class="sunRay sunRay5" cx="6" cy="3.1718" r="1.5"></circle>
-                      <circle class="sunRay sunRay6" cx="14" cy="3.1718" r="1.5"></circle>
-                    </g>
-                  </svg>
-                </label>
-            </div>
+    <div
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid lg:grid-cols-2 gap-12 items-center"
+    >
+      <div class="text-center lg:text-left space-y-8 animate-fade-in-up">
+        <div
+          class="inline-flex items-center px-4 py-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 text-sm font-medium backdrop-blur-sm"
+        >
+          <i class="bx bxs-magic-wand mr-2"></i>
+          <span>AI-Powered Translation</span>
         </div>
-    </nav>
-{% endblock %}
 
-{% block content %}
-    <main>
-        <section class="hero-section" id="home">
-            <div class="hero-content">
-                <div class="hero-chip reveal">
-                    <i class='bx bxs-magic-wand'></i>
-                    <span>AI-Powered Translation</span>
-                </div>
-                <h1 class="display-large reveal-delay-1">Break Language Barriers<br>In Real-Time</h1>
-                <p class="headline-small reveal-delay-2">
-                    Experience seamless, secure, and instant multilingual communication with Connectly. 
-                    Chat globally, understand locally.
-                </p>
-                <div class="hero-buttons reveal-delay-3">
-                    <a href="{{ url_for('auth.register') }}" class="m3-btn filled-btn ripple" style="text-decoration: none;">
-                        Get Started
-                    </a>
-                    <a href="#features" class="m3-btn tonal-large ripple">
-                        Learn More
-                    </a>
-                </div>
+        <h1
+          class="text-5xl lg:text-7xl font-bold tracking-tight text-slate-900 dark:text-white leading-tight transition-colors"
+        >
+          Break Language <br />
+          <span
+            class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400"
+            >Barriers In Real-Time</span
+          >
+        </h1>
+
+        <p
+          class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed transition-colors"
+        >
+          Experience seamless, secure, and instant multilingual communication
+          with Connectly. Chat globally, understand locally.
+        </p>
+
+        <div
+          class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+        >
+          <a
+            href="{{ url_for('auth.register') }}"
+            class="px-8 py-4 rounded-full bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition-all shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:shadow-[0_0_30px_rgba(99,102,241,0.5)] transform hover:-translate-y-1"
+          >
+            Get Started
+          </a>
+          <a
+            href="#features"
+            class="px-8 py-4 rounded-full border border-slate-300 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-white font-medium transition-all"
+          >
+            Learn More
+          </a>
+        </div>
+      </div>
+
+      <div class="relative animate-float">
+        <div
+          class="relative mx-auto border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-2xl transition-colors"
+        >
+          <div
+            class="h-[32px] w-[3px] bg-gray-200 dark:bg-slate-800 absolute -left-[17px] top-[72px] rounded-l-lg"
+          ></div>
+          <div
+            class="h-[46px] w-[3px] bg-gray-200 dark:bg-slate-800 absolute -left-[17px] top-[124px] rounded-l-lg"
+          ></div>
+          <div
+            class="h-[46px] w-[3px] bg-gray-200 dark:bg-slate-800 absolute -left-[17px] top-[178px] rounded-l-lg"
+          ></div>
+          <div
+            class="h-[64px] w-[3px] bg-gray-200 dark:bg-slate-800 absolute -right-[17px] top-[142px] rounded-r-lg"
+          ></div>
+          <div
+            class="rounded-[2rem] overflow-hidden w-full h-full bg-white dark:bg-slate-950 relative flex flex-col"
+          >
+            <div
+              class="bg-gray-50 dark:bg-slate-900 p-4 flex items-center gap-3 border-b border-gray-100 dark:border-slate-800"
+            >
+              <div
+                class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-xs text-white"
+              >
+                JD
+              </div>
+              <div class="flex-1">
+                <div
+                  class="h-2 w-20 bg-gray-300 dark:bg-slate-700 rounded mb-1"
+                ></div>
+                <div
+                  class="h-2 w-12 bg-gray-200 dark:bg-slate-800 rounded"
+                ></div>
+              </div>
             </div>
-            <div class="hero-visual reveal-side">
-                <div class="app-mockup">
-                    <div class="mockup-header">
-                        <div class="dot"></div><div class="dot"></div>
-                    </div>
-                    <div class="mockup-body">
-                        <div class="msg received">Hola, ¿cómo estás? <span class="trans-badge">Spanish</span></div>
-                        <div class="msg sent">Hello! I am doing great. <span class="trans-badge">English</span></div>
-                        <div class="msg received">C'est fantastique! <span class="trans-badge">French</span></div>
-                    </div>
+            <div class="p-4 space-y-4 flex-1 overflow-hidden">
+              <div class="flex flex-col items-start max-w-[85%]">
+                <div
+                  class="px-4 py-2 rounded-2xl rounded-tl-none bg-gray-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-sm"
+                >
+                  Hola, ¿cómo estás?
                 </div>
+                <span
+                  class="text-[10px] text-indigo-500 dark:text-indigo-400 mt-1 ml-1 bg-indigo-100 dark:bg-indigo-500/10 px-2 py-0.5 rounded-full inline-block"
+                  >Spanish</span
+                >
+              </div>
+              <div class="flex flex-col items-end max-w-[85%] ml-auto">
+                <div
+                  class="px-4 py-2 rounded-2xl rounded-tr-none bg-indigo-600 text-white text-sm"
+                >
+                  Hello! I am doing great.
+                </div>
+                <span
+                  class="text-[10px] text-indigo-600 dark:text-indigo-300 mt-1 mr-1 bg-indigo-50 dark:bg-white/10 px-2 py-0.5 rounded-full inline-block"
+                  >English</span
+                >
+              </div>
+              <div class="flex flex-col items-start max-w-[85%]">
+                <div
+                  class="px-4 py-2 rounded-2xl rounded-tl-none bg-gray-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-sm"
+                >
+                  C'est fantastique!
+                </div>
+                <span
+                  class="text-[10px] text-indigo-500 dark:text-indigo-400 mt-1 ml-1 bg-indigo-100 dark:bg-indigo-500/10 px-2 py-0.5 rounded-full inline-block"
+                  >French</span
+                >
+              </div>
             </div>
-        </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <section class="features-section" id="features">
-            <div class="section-header reveal">
-                <h2 class="display-medium">Why Connectly?</h2>
-                <p class="title-medium">Solving modern communication challenges.</p>
-            </div>
-            
-            <div class="m3-grid">
-                <div class="m3-card elevated reveal">
-                    <div class="card-icon surface-variant">
-                        <i class='bx bx-globe'></i>
-                    </div>
-                    <h3 class="headline-small">Real-Time Translation</h3>
-                    <p class="body-large">Don't let language hold you back. Connectly translates messages instantly into your preferred language using deep learning.</p>
-                </div>
-                <div class="m3-card elevated reveal-delay-1">
-                    <div class="card-icon surface-variant">
-                        <i class='bx bxs-bolt'></i>
-                    </div>
-                    <h3 class="headline-small">Lightning Fast</h3>
-                    <p class="body-large">Optimized WebSocket connections ensure your messages deliver in milliseconds, keeping conversations flowing naturally.</p>
-                </div>
-                <div class="m3-card elevated reveal-delay-2">
-                    <div class="card-icon surface-variant">
-                        <i class='bx bx-shield-quarter'></i>
-                    </div>
-                    <h3 class="headline-small">Secure & Private</h3>
-                    <p class="body-large">Your conversations are yours alone. We prioritize security with encrypted sessions and protected user data.</p>
-                </div>
-            </div>
-        </section>
+  <section
+    class="py-24 bg-white dark:bg-slate-900/50 relative transition-colors duration-300"
+    id="features"
+  >
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2
+          class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4 transition-colors"
+        >
+          Why Connectly?
+        </h2>
+        <p class="text-slate-600 dark:text-slate-400 text-lg transition-colors">
+          Solving modern communication challenges.
+        </p>
+      </div>
 
-        <!-- Swapped: Powered By Section Positioned Here -->
-        <section class="highlight-section">
-            <div class="tech-marquee" style="background: transparent; border: none; padding: 0;">
-                 <h2 class="display-medium" style="text-align: left; margin-bottom: 40px; padding-left: 24px;">Powered By</h2>
-                <div class="marquee-track">
-                    <span><i class='bx bxl-python'></i> Python</span>
-                    <span><i class='bx bxs-flask'></i> Flask</span>
-                    <span><i class='bx bxs-plug'></i> Socket.IO</span>
-                    <span><i class='bx bx-world'></i> Deep Translator</span>
-                    <span><i class='bx bxl-bootstrap'></i> Bootstrap</span>
-                    <span><i class='bx bxs-data'></i> SQLite</span>
-                    
-                    <!-- Duplicated for Scroll -->
-                    <span><i class='bx bxl-python'></i> Python</span>
-                    <span><i class='bx bxs-flask'></i> Flask</span>
-                    <span><i class='bx bxs-plug'></i> Socket.IO</span>
-                    <span><i class='bx bx-world'></i> Deep Translator</span>
-                    <span><i class='bx bxl-bootstrap'></i> Bootstrap</span>
-                    <span><i class='bx bxs-data'></i> SQLite</span>
-                </div>
-            </div>
-        </section>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div
+          class="p-8 rounded-3xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-white/5 hover:border-indigo-500 dark:hover:border-indigo-500/50 transition-all hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-500/20 group"
+        >
+          <div
+            class="w-14 h-14 rounded-2xl bg-white dark:bg-slate-700 flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-6 text-2xl group-hover:bg-indigo-600 group-hover:text-white transition-colors shadow-sm dark:shadow-none"
+          >
+            <i class="bx bx-globe"></i>
+          </div>
+          <h3
+            class="text-xl font-bold text-slate-900 dark:text-white mb-3 transition-colors"
+          >
+            Real-Time Translation
+          </h3>
+          <p
+            class="text-slate-600 dark:text-slate-400 leading-relaxed transition-colors"
+          >
+            Don't let language hold you back. Connectly translates messages
+            instantly into your preferred language using deep learning.
+          </p>
+        </div>
+        <div
+          class="p-8 rounded-3xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-white/5 hover:border-indigo-500 dark:hover:border-indigo-500/50 transition-all hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-500/20 group delay-100"
+        >
+          <div
+            class="w-14 h-14 rounded-2xl bg-white dark:bg-slate-700 flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-6 text-2xl group-hover:bg-indigo-600 group-hover:text-white transition-colors shadow-sm dark:shadow-none"
+          >
+            <i class="bx bxs-bolt"></i>
+          </div>
+          <h3
+            class="text-xl font-bold text-slate-900 dark:text-white mb-3 transition-colors"
+          >
+            Lightning Fast
+          </h3>
+          <p
+            class="text-slate-600 dark:text-slate-400 leading-relaxed transition-colors"
+          >
+            Optimized WebSocket connections ensure your messages deliver in
+            milliseconds, keeping conversations flowing naturally.
+          </p>
+        </div>
+        <div
+          class="p-8 rounded-3xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-white/5 hover:border-indigo-500 dark:hover:border-indigo-500/50 transition-all hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-500/20 group delay-200"
+        >
+          <div
+            class="w-14 h-14 rounded-2xl bg-white dark:bg-slate-700 flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-6 text-2xl group-hover:bg-indigo-600 group-hover:text-white transition-colors shadow-sm dark:shadow-none"
+          >
+            <i class="bx bx-shield-quarter"></i>
+          </div>
+          <h3
+            class="text-xl font-bold text-slate-900 dark:text-white mb-3 transition-colors"
+          >
+            Secure & Private
+          </h3>
+          <p
+            class="text-slate-600 dark:text-slate-400 leading-relaxed transition-colors"
+          >
+            Your conversations are yours alone. We prioritize security with
+            encrypted sessions and protected user data.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <section class="modules-section">
-             <div class="section-header reveal">
-                <h2 class="display-medium">Explore Modules</h2>
-            </div>
-            <div class="modules-container">
-                <a href="{{ url_for('auth.login') }}" class="module-card reveal">
-                    <div class="module-image login-img"></div>
-                    <div class="module-content">
-                        <h3 class="title-large">Secure Login</h3>
-                        <p class="body-medium">Encrypted authentication entry point.</p>
-                        <span class="link-text" style="display: block; margin-top: auto;">
-                            <button class="m3-btn filled-btn ripple" style="width: 100%;">Access</button>
-                        </span>
-                    </div>
-                </a>
-                <a href="{{ url_for('chat.chat_list') }}" class="module-card reveal-delay-1">
-                    <div class="module-image chat-img"></div>
-                    <div class="module-content">
-                        <h3 class="title-large">Live Chat</h3>
-                        <p class="body-medium">The core messaging experience.</p>
-                        <span class="link-text" style="display: block; margin-top: auto;">
-                            <button class="m3-btn filled-btn ripple" style="width: 100%;">Launch</button>
-                        </span>
-                    </div>
-                </a>
-            </div>
-        </section>
+  <section
+    class="py-16 bg-gray-100 dark:bg-slate-950 border-y border-gray-200 dark:border-white/5 overflow-hidden transition-colors duration-300"
+  >
+    <h2
+      class="text-2xl font-bold text-slate-900 dark:text-white mb-10 text-center md:text-left md:pl-24 transition-colors"
+    >
+      Powered By
+    </h2>
 
-        <!-- Swapped: Optimized For Section Positioned Here -->
-        <section class="highlight-section">
-            <h2 class="display-medium" style="text-align: left; margin-bottom: 40px; padding-left: 24px;">Optimized For</h2>
-            <div class="specs-scroller reveal-up" style="justify-content: flex-start; padding-left: 24px; margin-top: 0;">
-                <div class="spec-chip">
-                    <i class='bx bx-chip'></i>
-                    4GB RAM
-                </div>
-                <div class="spec-chip">
-                    <i class='bx bx-tachometer'></i>
-                    Intel Core i3+
-                </div>
-                <div class="spec-chip">
-                    <i class='bx bx-terminal'></i>
-                    Linux / Windows
-                </div>
-                <div class="spec-chip">
-                    <i class='bx bx-cloud'></i>
-                    10 Mbps Net
-                </div>
-                <div class="spec-chip">
-                    <i class='bx bx-data'></i>
-                    SQLite Storage
-                </div>
-            </div>
-        </section>
+    <div class="w-full overflow-x-auto pb-4 px-4 md:px-24 scrollbar-hide">
+      <div class="flex items-center gap-12 min-w-max">
+        <span
+          class="flex items-center gap-3 text-2xl text-slate-500 dark:text-slate-400 font-mono font-medium hover:text-slate-900 dark:hover:text-white transition-colors"
+          ><i class="bx bxl-python text-yellow-500 dark:text-yellow-300"></i>
+          Python</span
+        >
+        <span
+          class="flex items-center gap-3 text-2xl text-slate-500 dark:text-slate-400 font-mono font-medium hover:text-slate-900 dark:hover:text-white transition-colors"
+          ><i class="bx bxs-flask text-slate-800 dark:text-white"></i>
+          Flask</span
+        >
+        <span
+          class="flex items-center gap-3 text-2xl text-slate-500 dark:text-slate-400 font-mono font-medium hover:text-slate-900 dark:hover:text-white transition-colors"
+          ><i class="bx bxs-plug text-green-600 dark:text-green-400"></i>
+          Socket.IO</span
+        >
+        <span
+          class="flex items-center gap-3 text-2xl text-slate-500 dark:text-slate-400 font-mono font-medium hover:text-slate-900 dark:hover:text-white transition-colors"
+          ><i class="bx bx-world text-blue-500 dark:text-blue-400"></i> Deep
+          Translator</span
+        >
+        <span
+          class="flex items-center gap-3 text-2xl text-slate-500 dark:text-slate-400 font-mono font-medium hover:text-slate-900 dark:hover:text-white transition-colors"
+          ><i class="bx bxl-tailwind-css text-cyan-500 dark:text-cyan-400"></i>
+          Tailwind</span
+        >
+        <span
+          class="flex items-center gap-3 text-2xl text-slate-500 dark:text-slate-400 font-mono font-medium hover:text-slate-900 dark:hover:text-white transition-colors"
+          ><i class="bx bxs-data text-blue-700 dark:text-blue-200"></i>
+          SQLite</span
+        >
+      </div>
+    </div>
+  </section>
 
-        <!-- Footer Separator -->
-        <hr class="footer-separator">
+  <section class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2
+        class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white transition-colors"
+      >
+        Explore Modules
+      </h2>
+    </div>
 
-        <!-- Footer -->
-        <footer class="m3-footer">
-            <!-- Main Footer -->
-            <div class="m3-footer-main" style="padding-top: 20px;"> <!-- Reduced padding since pre-footer is gone -->
-                <div class="footer-copy">
-                    <span>© 2024 Connectly</span>
-                    <span class="footer-divider">|</span>
-                    <div class="footer-links">
-                        <a href="#">Privacy</a>
-                        <span>•</span>
-                        <a href="#">Terms</a>
-                    </div>
-                </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <a
+        href="{{ url_for('auth.login') }}"
+        class="group relative overflow-hidden rounded-3xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-white/5 hover:border-indigo-500 transition-all h-[400px] flex flex-col shadow-lg hover:shadow-xl"
+      >
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent z-10"
+        ></div>
+        <div
+          class="absolute inset-0 bg-cover bg-center group-hover:scale-110 transition-transform duration-700"
+          style="background-image: url('{{ url_for('static', filename='images/login-card.png') }}');"
+        ></div>
 
-                <div class="footer-socials">
-                    <a href="#" class="social-icon"><i class='bx bxl-github'></i></a>
-                    <a href="#" class="social-icon"><i class='bx bxl-twitter'></i></a>
-                    <a href="#" class="social-icon"><i class='bx bxl-linkedin'></i></a>
-                    <a href="#" class="social-icon"><i class='bx bxs-envelope'></i></a>
-                </div>
+        <div class="relative z-20 mt-auto p-8">
+          <h3 class="text-2xl font-bold text-white mb-2">Secure Login</h3>
+          <p class="text-slate-200 mb-6">
+            Encrypted authentication entry point.
+          </p>
+          <button
+            class="w-full py-3 bg-white/20 hover:bg-white/30 backdrop-blur-md text-white rounded-xl font-semibold transition-colors border border-white/20"
+          >
+            Access
+          </button>
+        </div>
+      </a>
 
-                <div class="footer-lang">
-                    <div class="custom-dropdown" id="languageDropdown">
-                        <div class="dropdown-selected">
-                            English
-                        </div>
-                        <div class="dropdown-options">
-                            <div class="dropdown-option" data-value="en">English</div>
-                            <div class="dropdown-option" data-value="es">Español</div>
-                            <div class="dropdown-option" data-value="fr">Français</div>
-                            <div class="dropdown-option" data-value="de">Deutsch</div>
-                            <div class="dropdown-option" data-value="zh-CN">中文 (Simplified)</div>
-                            <div class="dropdown-option" data-value="ja">日本語</div>
-                            <div class="dropdown-option" data-value="hi">हिन्दी</div>
-                         </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </main>
-{% endblock %}
+      <a
+        href="{{ url_for('chat.chat_list') }}"
+        class="group relative overflow-hidden rounded-3xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-white/5 hover:border-indigo-500 transition-all h-[400px] flex flex-col shadow-lg hover:shadow-xl"
+      >
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent z-10"
+        ></div>
+        <div
+          class="absolute inset-0 bg-cover bg-center group-hover:scale-110 transition-transform duration-700"
+          style="background-image: url('{{ url_for('static', filename='images/chat-card.png') }}');"
+        ></div>
 
-{% block scripts %}
-    <script src="{{ url_for('static', filename='js/landing_m3.js') }}"></script>
+        <div class="relative z-20 mt-auto p-8">
+          <h3 class="text-2xl font-bold text-white mb-2">Live Chat</h3>
+          <p class="text-slate-200 mb-6">The core messaging experience.</p>
+          <button
+            class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold transition-colors shadow-lg shadow-indigo-500/30"
+          >
+            Launch
+          </button>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section
+    class="py-12 bg-gray-50 dark:bg-slate-900 border-t border-gray-200 dark:border-white/5 transition-colors duration-300"
+  >
+    <div class="max-w-7xl mx-auto px-4">
+      <h2
+        class="text-2xl font-bold text-slate-900 dark:text-white mb-8 transition-colors"
+      >
+        Optimized For
+      </h2>
+      <div class="flex flex-wrap gap-4">
+        <div
+          class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 rounded-full border border-gray-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-white hover:border-indigo-500 transition-colors cursor-default shadow-sm dark:shadow-none"
+        >
+          <i class="bx bx-chip"></i> 4GB RAM
+        </div>
+        <div
+          class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 rounded-full border border-gray-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-white hover:border-indigo-500 transition-colors cursor-default shadow-sm dark:shadow-none"
+        >
+          <i class="bx bx-tachometer"></i> Intel Core i3+
+        </div>
+        <div
+          class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 rounded-full border border-gray-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-white hover:border-indigo-500 transition-colors cursor-default shadow-sm dark:shadow-none"
+        >
+          <i class="bx bx-terminal"></i> Linux / Windows
+        </div>
+        <div
+          class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 rounded-full border border-gray-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-white hover:border-indigo-500 transition-colors cursor-default shadow-sm dark:shadow-none"
+        >
+          <i class="bx bx-cloud"></i> 10 Mbps Net
+        </div>
+        <div
+          class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 rounded-full border border-gray-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-white hover:border-indigo-500 transition-colors cursor-default shadow-sm dark:shadow-none"
+        >
+          <i class="bx bxs-data"></i> SQLite Storage
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer
+    class="bg-white dark:bg-slate-950 border-t border-gray-200 dark:border-slate-800 pt-16 pb-8 transition-colors duration-300"
+  >
+    <div
+      class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-8"
+    >
+      <div class="flex items-center gap-4 text-slate-500 text-sm">
+        <span>© 2024 Connectly</span>
+        <span class="w-px h-4 bg-slate-300 dark:bg-slate-700"></span>
+        <a
+          href="#"
+          class="hover:text-indigo-600 dark:hover:text-white transition-colors"
+          >Privacy</a
+        >
+        <span>•</span>
+        <a
+          href="#"
+          class="hover:text-indigo-600 dark:hover:text-white transition-colors"
+          >Terms</a
+        >
+      </div>
+
+      <div class="flex gap-6">
+        <a
+          href="#"
+          class="text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 text-2xl transition-colors"
+          ><i class="bx bxl-github"></i
+        ></a>
+        <a
+          href="#"
+          class="text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 text-2xl transition-colors"
+          ><i class="bx bxl-twitter"></i
+        ></a>
+        <a
+          href="#"
+          class="text-slate-400 hover:text-blue-700 dark:hover:text-blue-600 text-2xl transition-colors"
+          ><i class="bx bxl-linkedin"></i
+        ></a>
+        <a
+          href="#"
+          class="text-slate-400 hover:text-red-500 dark:hover:text-red-400 text-2xl transition-colors"
+          ><i class="bx bxs-envelope"></i
+        ></a>
+      </div>
+
+      <div class="relative group">
+        <button
+          class="flex items-center gap-2 bg-gray-100 dark:bg-slate-800 px-4 py-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors text-sm font-medium border border-gray-200 dark:border-slate-700"
+        >
+          <i class="bx bx-globe"></i>
+          <span>English</span>
+          <i
+            class="bx bx-chevron-up group-hover:rotate-180 transition-transform"
+          ></i>
+        </button>
+        <div
+          class="absolute bottom-full right-0 mb-2 w-48 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 shadow-xl overflow-hidden hidden group-hover:block animate-fade-in-up"
+        >
+          <a
+            href="#"
+            class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-indigo-600 hover:text-white"
+            >English</a
+          >
+          <a
+            href="#"
+            class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-indigo-600 hover:text-white"
+            >Español</a
+          >
+          <a
+            href="#"
+            class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-indigo-600 hover:text-white"
+            >Français</a
+          >
+          <a
+            href="#"
+            class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-indigo-600 hover:text-white"
+            >Deutsch</a
+          >
+          <a
+            href="#"
+            class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-indigo-600 hover:text-white"
+            >中文</a
+          >
+          <a
+            href="#"
+            class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-indigo-600 hover:text-white"
+            >日本語</a
+          >
+          <a
+            href="#"
+            class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-indigo-600 hover:text-white"
+            >हिन्दी</a
+          >
+        </div>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<style>
+  /* Custom Animations */
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  /* Hide Scrollbar for Horizontal Strip */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Sun/Moon Toggle Animation Logic (Adapted from original) */
+  .st-sunMoonThemeToggleBtn {
+    color: var(--md-sys-color-on-surface);
+  }
+  .st-sunMoonThemeToggleBtn .sunMoon {
+    transform-origin: center center;
+  }
+
+  /* Sun Rays */
+  .st-sunMoonThemeToggleBtn .sunRay {
+    transform-origin: center center;
+  }
+</style>
+
+<script>
+  // --- 1. Theme Toggle Logic ---
+  const themeToggle = document.getElementById("themeToggle");
+  const html = document.documentElement;
+  const navLogo = document.getElementById("nav-logo");
+
+  // Check LocalStorage or System Preference
+  if (
+    localStorage.theme === "dark" ||
+    (!("theme" in localStorage) &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ) {
+    html.classList.add("dark");
+    themeToggle.checked = true;
+    updateLogoColor(true);
+  } else {
+    html.classList.remove("dark");
+    themeToggle.checked = false;
+    updateLogoColor(false);
+  }
+
+  // Toggle Event
+  themeToggle.addEventListener("change", function () {
+    if (this.checked) {
+      html.classList.add("dark");
+      localStorage.theme = "dark";
+      updateLogoColor(true);
+    } else {
+      html.classList.remove("dark");
+      localStorage.theme = "light";
+      updateLogoColor(false);
+    }
+  });
+
+  // --- 2. Logo Color Changing Logic ---
+  function updateLogoColor(isDark) {
+    if (isDark) {
+      // If logo needs inversion in dark mode (e.g., black logo becoming white)
+      // Adjust 'invert(1)' or 'brightness(0) invert(1)' based on your specific logo image
+      navLogo.style.filter = "brightness(0) invert(1)";
+    } else {
+      // Reset filter for light mode
+      navLogo.style.filter = "none";
+    }
+  }
+
+  // --- 3. Navbar Scroll Effect ---
+  window.addEventListener("scroll", () => {
+    const navbar = document.getElementById("navbar");
+    if (window.scrollY > 20) {
+      navbar.classList.add("shadow-lg", "bg-white/95", "dark:bg-slate-900/95");
+      navbar.classList.remove("bg-white/80", "dark:bg-slate-900/80");
+    } else {
+      navbar.classList.remove(
+        "shadow-lg",
+        "bg-white/95",
+        "dark:bg-slate-900/95"
+      );
+      navbar.classList.add("bg-white/80", "dark:bg-slate-900/80");
+    }
+  });
+</script>
 {% endblock %}
