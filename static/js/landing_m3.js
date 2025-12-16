@@ -82,10 +82,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const marqueeTrack = document.querySelector('.marquee-track');
     if (marqueeTrack) {
         window.addEventListener('scroll', () => {
-            const scrollPos = window.scrollY;
-            // Move left as we scroll down
-            const moveAmount = scrollPos * -0.5; 
-            marqueeTrack.style.transform = `translateX(${moveAmount}px)`;
+            // Only use JS scroll effect on desktop
+            if (window.innerWidth > 768) {
+                const scrollPos = window.scrollY;
+                // Move left as we scroll down
+                const moveAmount = scrollPos * -0.5; 
+                marqueeTrack.style.transform = `translateX(${moveAmount}px)`;
+            }
         });
     }
 

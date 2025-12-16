@@ -171,13 +171,25 @@ a { text-decoration: none; color: inherit; }
     display: flex;
     align-items: center;
     gap: 12px;
-    color: var(--md-sys-color-on-surface);
+    color: var(--md-sys-color-on-surface); /* Fallback */
     letter-spacing: 0.5px;
-    text-transform: uppercase; /* CAPITAL LETTERS */
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+    text-decoration: none !important; /* No underline */
+    line-height: 40px; /* Match logo height */
+    height: 40px;
 }
+
+/* Theme Oriented White for Dark Mode (Brighter, slightly cool tinted white) */
+[data-theme="dark"] .brand-logo {
+    color: #F0F5F9; /* High contrast white with tiny blue tint */
+    text-shadow: 0 0 20px rgba(5, 136, 166, 0.3); /* Subtle glow matching primary */
+}
+
 .nav-logo {
-    height: 32px; /* Set specific height to align */
+    height: 40px; /* Explicit height matching text/container */
     width: auto;
+    object-fit: contain;
 }
 
 .nav-actions {
@@ -208,6 +220,7 @@ a { text-decoration: none; color: inherit; }
     cursor: pointer;
     border: none;
     text-transform: capitalize;
+    text-decoration: none !important; /* Force remove underline */
 }
 .text-btn { 
     color: var(--md-sys-color-primary); 
@@ -215,8 +228,9 @@ a { text-decoration: none; color: inherit; }
     border-radius: 9999px;
     height: 48px;
     padding: 0 24px;
+    text-decoration: none !important;
 }
-.text-btn:hover { background: rgba(var(--md-sys-color-primary-rgb), 0.08); }
+.text-btn:hover { background: rgba(var(--md-sys-color-primary-rgb), 0.08); text-decoration: none; }
 
 .filled-btn {
     background: var(--md-sys-color-primary);
@@ -225,20 +239,24 @@ a { text-decoration: none; color: inherit; }
     border-radius: 9999px;
     height: 48px;
     padding: 0 24px;
+    text-decoration: none !important;
 }
 .filled-btn:hover {
     box-shadow: var(--md-sys-elevation-1);
     transform: translateY(-1px);
     filter: brightness(1.05);
+    text-decoration: none;
 }
 
 .tonal-large {
     background: var(--md-sys-color-primary-container);
     color: var(--md-sys-color-on-primary-container);
+    text-decoration: none !important;
 }
 .tonal-large:hover {
     box-shadow: var(--md-sys-elevation-1);
     filter: brightness(0.95);
+    text-decoration: none;
 }
 
 /* --- Highlight Sections (Powered By / Optimized For) --- */
@@ -522,7 +540,9 @@ a { text-decoration: none; color: inherit; }
     position: relative;
     transition: transform 0.4s var(--ease-smooth), box-shadow 0.4s var(--ease-smooth);
     border: 1px solid rgba(var(--md-sys-color-outline), 0.15);
+    text-decoration: none !important;
 }
+.module-card * { text-decoration: none !important; }
 [data-theme="dark"] .module-card { 
     background-image: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
     border: 1px solid rgba(255,255,255,0.08); 
@@ -544,8 +564,8 @@ a { text-decoration: none; color: inherit; }
     transition: transform 0.6s var(--ease-smooth);
 }
 
-.login-img::before { background-image: url('../images/login-card.png'); } 
-.chat-img::before { background-image: url('../images/chat-card.png'); } 
+.login-img::before { background-image: url('../images/login-card.webp'); } 
+.chat-img::before { background-image: url('../images/chat-card.webp'); } 
 
 .module-card:hover .module-image::before {
     transform: scale(1.1);
@@ -572,11 +592,17 @@ a { text-decoration: none; color: inherit; }
 
 /* --- New Theme Toggle (SVG) --- */
 .themeToggle {
-  color: var(--md-sys-color-on-surface); /* Match logo/text color */
-  width: 2em; /* Size consistent with icons */
+  color: var(--md-sys-color-on-surface);
+  width: 2em;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: color 0.3s ease;
+}
+
+[data-theme="dark"] .themeToggle {
+    color: #F0F5F9; /* Matching Logo High Contrast */
+    filter: drop-shadow(0 0 8px rgba(5, 136, 166, 0.4));
 }
 
 .st-sunMoonThemeToggleBtn {
@@ -653,12 +679,13 @@ a { text-decoration: none; color: inherit; }
   }
 }
 
-/* --- Marquee (Scroll Driven) --- */
+/* --- Marquee (Scroll Driven & Auto) --- */
 .tech-marquee { 
     /* Padding/Background handled by .section-full-width container now */
     overflow: hidden; 
     text-align: center; 
     opacity: 0.8; 
+    white-space: nowrap;
 }
 .marquee-track {
     display: flex; gap: 80px; 
@@ -668,6 +695,20 @@ a { text-decoration: none; color: inherit; }
     will-change: transform;
     transition: transform 0.1s linear; /* Smooth scroll sync */
     padding-left: 50vw; /* Start with offset */
+}
+
+/* Mobile Auto Scroll for Marquee */
+@media (max-width: 768px) {
+    .marquee-track {
+        animation: marqueeAuto 20s linear infinite;
+        padding-left: 0; /* Reset for continuous loop */
+    }
+    
+    /* Duplicate content logic handled in HTML - usually need enough width */
+    @keyframes marqueeAuto {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); } /* Assuming content is duplicated 1x */
+    }
 }
 
 /* --- Footer Overhaul --- */
@@ -682,7 +723,11 @@ a { text-decoration: none; color: inherit; }
 [data-theme="dark"] .pre-footer { border-top-color: transparent; }
 
 .pf-brand { font-weight: 700; font-size: 1.2rem; display: flex; align-items: center; gap: 12px; }
-.pf-actions { display: flex; gap: 16px; }
+.pf-actions { 
+    display: flex; 
+    gap: 16px; 
+    flex-wrap: nowrap; /* Force single line */
+}
 
 .m3-footer-main {
     background: transparent; /* Unified Background (was surface-variant/black) */
@@ -690,7 +735,7 @@ a { text-decoration: none; color: inherit; }
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* Force single line on desktop */
     gap: 40px;
 }
 [data-theme="dark"] .m3-footer-main { background: transparent; }
@@ -701,6 +746,7 @@ a { text-decoration: none; color: inherit; }
     display: flex;
     gap: 8px;
     align-items: center;
+    flex-shrink: 0;
 }
 .footer-links {
     display: flex; gap: 8px;
@@ -724,6 +770,7 @@ a { text-decoration: none; color: inherit; }
     display: flex; align-items: center; justify-content: center;
     color: var(--md-sys-color-on-surface);
     transition: all 0.2s;
+    text-decoration: none !important;
 }
 .social-icon:hover {
     background: var(--md-sys-color-on-surface);
@@ -731,6 +778,9 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* --- Custom Language Dropdown --- */
+.footer-lang {
+    flex-shrink: 0;
+}
 .custom-dropdown {
     position: relative;
     width: 200px; /* Specific width or auto */

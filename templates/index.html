@@ -5,6 +5,11 @@
 {% block title %}Connectly - AI-Powered Chat{% endblock %}
 {% block description %}Connectly - AI-Powered Chat Platform. Chat globally, understand locally with real-time translation and secure messaging.{% endblock %}
 
+{% block extra_meta %}
+<link rel="preload" href="{{ url_for('static', filename='css/landing_m3.css') }}" as="style">
+<link rel="preload" href="{{ url_for('static', filename='images/logo.webp') }}" as="image">
+{% endblock %}
+
 {% block extra_css %}
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/landing_m3.css') }}">
@@ -15,7 +20,7 @@
         <div id="google_translate_element" style="display:none"></div>
         <div class="nav-container">
             <a href="#" class="brand-logo" aria-label="Connectly Home">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Connectly Logo" class="nav-logo" width="40" height="40" style="height: 40px; width: auto;">
+                <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Connectly Logo" class="nav-logo" width="40" height="40" style="height: 40px; width: auto;">
                 Connectly
             </a>
             <div class="nav-actions">
@@ -204,39 +209,44 @@
             </div>
         </section>
 
-        <div class="pre-footer">
-            <div class="pf-brand">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="nav-logo" style="height: 32px;">
-                <span>Connectly</span>
-            </div>
-            <div class="pf-actions">
-               <a href="{{ url_for('auth.login') }}" class="m3-btn text-btn">Login</a>
-               <a href="{{ url_for('auth.register') }}" class="m3-btn filled-btn" style="border-radius: 9999px;">Register</a>
-            </div>
-        </div>
-
+        <!-- Footer Separator -->
         <hr class="footer-separator">
 
-        <footer class="m3-footer-main">
-            <div class="footer-copy">
-                <span>2025 © Connectly LLC</span>
-                <span class="footer-divider">|</span>
-                <a href="#">Privacy Policy</a>
-            </div>
-            <!-- Removed separate footer-links div to merge with copy -->
-            <div class="footer-socials">
-                <a href="#" class="social-icon" aria-label="Twitter"><i class='bx bxl-twitter'></i></a>
-                <a href="#" class="social-icon" aria-label="YouTube"><i class='bx bxl-youtube'></i></a>
-                <a href="#" class="social-icon" aria-label="Instagram"><i class='bx bxl-instagram'></i></a>
-                <a href="#" class="social-icon" aria-label="Facebook"><i class='bx bxl-facebook'></i></a>
-                <a href="#" class="social-icon" aria-label="LinkedIn"><i class='bx bxl-linkedin'></i></a>
-                <a href="#" class="social-icon" aria-label="GitHub"><i class='bx bxl-github'></i></a>
-            </div>
-            <div class="footer-lang">
-                <div class="custom-dropdown" id="languageDropdown">
-                    <div class="dropdown-selected">English</div>
-                    <div class="dropdown-options">
-                        {% include 'partials/language_options_custom.html' %}
+        <!-- Footer -->
+        <footer class="m3-footer">
+            <!-- Main Footer -->
+            <div class="m3-footer-main" style="padding-top: 20px;"> <!-- Reduced padding since pre-footer is gone -->
+                <div class="footer-copy">
+                    <span>© 2024 Connectly</span>
+                    <span class="footer-divider">|</span>
+                    <div class="footer-links">
+                        <a href="#">Privacy</a>
+                        <span>•</span>
+                        <a href="#">Terms</a>
+                    </div>
+                </div>
+
+                <div class="footer-socials">
+                    <a href="#" class="social-icon"><i class='bx bxl-github'></i></a>
+                    <a href="#" class="social-icon"><i class='bx bxl-twitter'></i></a>
+                    <a href="#" class="social-icon"><i class='bx bxl-linkedin'></i></a>
+                    <a href="#" class="social-icon"><i class='bx bxs-envelope'></i></a>
+                </div>
+
+                <div class="footer-lang">
+                    <div class="custom-dropdown" id="languageDropdown">
+                        <div class="dropdown-selected">
+                            English
+                        </div>
+                        <div class="dropdown-options">
+                            <div class="dropdown-option" data-value="en">English</div>
+                            <div class="dropdown-option" data-value="es">Español</div>
+                            <div class="dropdown-option" data-value="fr">Français</div>
+                            <div class="dropdown-option" data-value="de">Deutsch</div>
+                            <div class="dropdown-option" data-value="zh-CN">中文 (Simplified)</div>
+                            <div class="dropdown-option" data-value="ja">日本語</div>
+                            <div class="dropdown-option" data-value="hi">हिन्दी</div>
+                         </div>
                     </div>
                 </div>
             </div>
