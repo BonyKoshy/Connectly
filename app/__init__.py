@@ -1,16 +1,18 @@
-from flask import Flask
+import secrets
+from quart import Quart, render_template, g
+from socketio import ASGIApp
 from config import config
-from app.extensions import socketio, csrf, limiter
+from app.extensions import socketio, limiter
 
 def create_app(config_name='default'):
-    app = Flask(__name__, template_folder='../templates', static_folder='../static')
+    app = Quart(__name__, template_folder='../templates', static_folder='../static')
     app.config.from_object(config[config_name])
 
-    # Initialize extensions
-    socketio.init_app(app)
-    csrf.init_app(app)
+    # Initialize Extensions
     limiter.init_app(app)
     
+    app_asgi = ASGIApp(socketio, app)
+
     # Register Blueprints
     from app.main import main as main_blueprint
     app.register_blueprint(main_blueprint)
@@ -20,42 +22,32 @@ def create_app(config_name='default'):
     
     from app.chat import chat as chat_blueprint
     app.register_blueprint(chat_blueprint)
-    
-    # Error handlers
-    from flask import render_template
-    
-    @app.errorhandler(400)
-    def bad_request(error):
-        return render_template('error.html', error_code=400, error_title="Bad Request", error_message="The browser (or proxy) sent a request that this server could not understand."), 400
 
-    @app.errorhandler(401)
-    def unauthorized(error):
-        return render_template('error.html', error_code=401, error_title="Unauthorized", error_message="You must be logged in to access this page."), 401
+    @app.before_request
+    async def create_nonce():
+        # Generate a unique nonce for this request
+        g.nonce = secrets.token_urlsafe(16)
 
-    @app.errorhandler(403)
-    def forbidden(error):
-        return render_template('error.html', error_code=403, error_title="Forbidden", error_message="You do not have permission to access this resource."), 403
-
-    @app.errorhandler(404)
-    def not_found(error):
-        return render_template('error.html', error_code=404, error_title="Page Not Found", error_message="The requested URL was not found on the server."), 404
-        
     @app.after_request
     def add_security_headers(response):
-        # Added 'https://cdn.tailwindcss.com' to script-src and style-src
-        response.headers['Content-Security-Policy'] = (
-            "default-src 'self'; "
-            "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.jsdelivr.net https://www.google.com https://www.gstatic.com https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://cdn.tailwindcss.com; "
-            "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com https://translate.googleapis.com https://www.gstatic.com https://cdn.tailwindcss.com; "
-            "font-src 'self' https://cdn.jsdelivr.net https://unpkg.com https://fonts.gstatic.com; "
-            "connect-src 'self' https://translate.googleapis.com https://translate-pa.googleapis.com; "
-            "frame-src 'self' https://www.google.com; "
-            "img-src 'self' data: https://www.google.com https://www.gstatic.com https://translate.googleapis.com https://fonts.gstatic.com; "
-            "object-src 'none';"
+        # FIX: Explicitly allow the domains causing your errors
+        csp_policy = (
+            f"default-src 'self'; "
+            f"script-src 'self' 'nonce-{g.nonce}' https://cdn.jsdelivr.net https://cdn.tailwindcss.com; "
+            # Added https://unpkg.com here for Boxicons
+            f"style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://fonts.googleapis.com https://unpkg.com; "
+            # Added https://cdn.jsdelivr.net and https://unpkg.com here for Fonts
+            f"font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://unpkg.com; "
+            f"img-src 'self' data:; "
+            f"connect-src 'self' ws: wss:;"
         )
+        response.headers['Content-Security-Policy'] = csp_policy
         response.headers['X-Content-Type-Options'] = 'nosniff'
         response.headers['X-Frame-Options'] = 'SAMEORIGIN'
-        response.headers['X-XSS-Protection'] = '1; mode=block'
         return response
 
-    return app
+    @app.errorhandler(404)
+    async def not_found(error):
+        return await render_template('error.html', error_code=404, title="Not Found"), 404
+
+    return app_asgi

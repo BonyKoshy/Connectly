@@ -166,7 +166,7 @@ a {
     justify-content: center;
     cursor: pointer;
 }
-.md-icon-btn:hover { background-color: rgba(var(--md-sys-color-on-surface-variant), 0.08); }
+.md-icon-btn:hover { background-color: var(--md-sys-color-surface-variant); }
 .md-icon-btn.active { color: var(--md-sys-color-primary); background-color: var(--md-sys-color-secondary-container); }
 
 .md-fab {

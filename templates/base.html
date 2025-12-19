@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-900">
+<html lang="en" class="h-full">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,8 +9,14 @@
       content="{% block description %}Secure Real-Time Chat Platform{% endblock %}"
     />
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/logo.png') }}"
+    />
+
+    <script src="https://cdn.tailwindcss.com" nonce="{{ g.nonce }}"></script>
+    <script nonce="{{ g.nonce }}">
       tailwind.config = {
         theme: {
           extend: {
@@ -38,6 +44,20 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+
+    <script nonce="{{ g.nonce }}">
+      // Early theme initialization to prevent FOUC
+      const theme =
+        localStorage.getItem("theme") ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light");
+      if (theme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
 
     <style>
       body {
@@ -72,15 +92,107 @@
           transform: rotate(360deg);
         }
       }
+
+      /* Global Theme Toggle Styles */
+      .themeToggle {
+        color: #bbb;
+        width: 2.5em; /* Adjusted for navbar/sidebar */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .st-sunMoonThemeToggleBtn {
+        position: relative;
+        cursor: pointer;
+      }
+
+      .st-sunMoonThemeToggleBtn .themeToggleInput {
+        opacity: 0;
+        width: 100%;
+        aspect-ratio: 1;
+        position: absolute;
+        z-index: 1;
+        cursor: pointer;
+      }
+
+      .st-sunMoonThemeToggleBtn svg {
+        width: 100%;
+        height: 100%;
+        transition: transform 0.4s ease;
+        transform: rotate(40deg);
+        pointer-events: none;
+      }
+
+      .st-sunMoonThemeToggleBtn svg .sunMoon {
+        transform-origin: center center;
+        transition: inherit;
+        transform: scale(1);
+      }
+
+      .st-sunMoonThemeToggleBtn svg .sunRay {
+        transform-origin: center center;
+        transform: scale(0);
+      }
+
+      .st-sunMoonThemeToggleBtn svg mask > circle {
+        transition: transform 0.64s cubic-bezier(0.41, 0.64, 0.32, 1.575);
+        transform: translate(0px, 0px);
+      }
+
+      .st-sunMoonThemeToggleBtn svg .sunRay2 {
+        animation-delay: 0.05s !important;
+      }
+      .st-sunMoonThemeToggleBtn svg .sunRay3 {
+        animation-delay: 0.1s !important;
+      }
+      .st-sunMoonThemeToggleBtn svg .sunRay4 {
+        animation-delay: 0.17s !important;
+      }
+      .st-sunMoonThemeToggleBtn svg .sunRay5 {
+        animation-delay: 0.25s !important;
+      }
+      .st-sunMoonThemeToggleBtn svg .sunRay6 {
+        animation-delay: 0.29s !important;
+      }
+
+      .st-sunMoonThemeToggleBtn .themeToggleInput:checked + svg {
+        transform: rotate(90deg);
+      }
+      .st-sunMoonThemeToggleBtn .themeToggleInput:checked + svg mask > circle {
+        transform: translate(16px, -3px);
+      }
+      .st-sunMoonThemeToggleBtn .themeToggleInput:checked + svg .sunMoon {
+        transform: scale(0.55);
+      }
+      .st-sunMoonThemeToggleBtn .themeToggleInput:checked + svg .sunRay {
+        animation: showRay1832 0.4s ease 0s 1 forwards;
+      }
+
+      @keyframes showRay1832 {
+        0% {
+          transform: scale(0);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      html:not(.dark) .themeToggle {
+        color: #475569;
+      }
+      html.dark .themeToggle {
+        color: #f1f5f9;
+      }
     </style>
     {% block extra_css %}{% endblock %}
   </head>
   <body
-    class="h-full text-slate-200 antialiased selection:bg-primary selection:text-white flex flex-col"
+    class="h-full text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-900 transition-colors duration-300 antialiased selection:bg-primary selection:text-white flex flex-col"
   >
     <div
       id="globalLoader"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900 transition-opacity duration-300"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-slate-900 transition-opacity duration-300"
     >
       <div
         class="loader ease-linear rounded-full border-4 border-t-4 border-slate-700 h-12 w-12 mb-4"
@@ -113,12 +225,56 @@
 
     {% block content %}{% endblock %}
 
-    <script>
+    <script nonce="{{ g.nonce }}">
       window.addEventListener("load", () => {
         const loader = document.getElementById("globalLoader");
-        loader.style.opacity = "0";
-        setTimeout(() => (loader.style.display = "none"), 300);
+        // This line removes the stuck loading screen
+        if (loader) {
+          loader.style.opacity = "0";
+          setTimeout(() => (loader.style.display = "none"), 300);
+        }
       });
+
+      // Global Theme Toggle Functionality
+      function initThemeToggle() {
+        const themeToggles = document.querySelectorAll("#themeToggle");
+        const html = document.documentElement;
+        const navLogo = document.getElementById("nav-logo");
+
+        function updateLogoColor(isDark) {
+          if (navLogo) {
+            navLogo.style.filter = isDark ? "brightness(0) invert(1)" : "none";
+          }
+        }
+
+        function setTheme(isDark) {
+          if (isDark) {
+            html.classList.add("dark");
+            localStorage.setItem("theme", "dark");
+          } else {
+            html.classList.remove("dark");
+            localStorage.setItem("theme", "light");
+          }
+          updateLogoColor(isDark);
+
+          // Sync all toggles on the page
+          themeToggles.forEach((toggle) => {
+            toggle.checked = isDark;
+          });
+        }
+
+        const isDark = html.classList.contains("dark");
+        themeToggles.forEach((toggle) => {
+          toggle.checked = isDark;
+          toggle.addEventListener("change", function () {
+            setTheme(this.checked);
+          });
+        });
+
+        updateLogoColor(isDark);
+      }
+
+      document.addEventListener("DOMContentLoaded", initThemeToggle);
     </script>
     {% block scripts %}{% endblock %}
   </body>

@@ -27,37 +27,33 @@ endblock %} {% block navbar %}
 
       <label
         for="themeToggle"
-        class="themeToggle st-sunMoonThemeToggleBtn relative inline-block w-10 h-10 cursor-pointer"
-        type="checkbox"
+        class="themeToggle st-sunMoonThemeToggleBtn"
       >
         <input
           type="checkbox"
           id="themeToggle"
-          class="themeToggleInput sr-only"
+          class="themeToggleInput"
           aria-label="Toggle Dark Mode"
         />
         <svg
-          width="40"
-          height="40"
+          width="18"
+          height="18"
           viewBox="0 0 20 20"
           fill="currentColor"
           stroke="none"
-          class="text-slate-800 dark:text-white transition-colors"
         >
           <mask id="moon-mask">
             <rect x="0" y="0" width="20" height="20" fill="white"></rect>
             <circle cx="11" cy="3" r="8" fill="black"></circle>
           </mask>
           <circle
-            class="sunMoon origin-center transition-transform duration-500"
+            class="sunMoon"
             cx="10"
             cy="10"
             r="8"
             mask="url(#moon-mask)"
           ></circle>
-          <g
-            class="sunRays opacity-0 dark:opacity-100 transition-opacity duration-500"
-          >
+          <g>
             <circle class="sunRay sunRay1" cx="18" cy="10" r="1.5"></circle>
             <circle class="sunRay sunRay2" cx="14" cy="16.928" r="1.5"></circle>
             <circle class="sunRay sunRay3" cx="6" cy="16.928" r="1.5"></circle>
@@ -367,8 +363,7 @@ endblock %} {% block navbar %}
           class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent z-10"
         ></div>
         <div
-          class="absolute inset-0 bg-cover bg-center group-hover:scale-110 transition-transform duration-700"
-          style="background-image: url('{{ url_for('static', filename='images/login-card.png') }}');"
+          class="absolute inset-0 bg-cover bg-center group-hover:scale-110 transition-transform duration-700 login-card-bg"
         ></div>
 
         <div class="relative z-20 mt-auto p-8">
@@ -392,8 +387,7 @@ endblock %} {% block navbar %}
           class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent z-10"
         ></div>
         <div
-          class="absolute inset-0 bg-cover bg-center group-hover:scale-110 transition-transform duration-700"
-          style="background-image: url('{{ url_for('static', filename='images/chat-card.png') }}');"
+          class="absolute inset-0 bg-cover bg-center group-hover:scale-110 transition-transform duration-700 chat-card-bg"
         ></div>
 
         <div class="relative z-20 mt-auto p-8">
@@ -585,80 +579,13 @@ endblock %} {% block navbar %}
     scrollbar-width: none;
   }
 
-  /* Sun/Moon Toggle Animation Logic (Adapted from original) */
-  .st-sunMoonThemeToggleBtn {
-    color: var(--md-sys-color-on-surface);
+  /* Card Backgrounds to fix linting errors */
+  .login-card-bg {
+    background-image: url("{{ url_for('static', filename='images/login-card.png') }}");
   }
-  .st-sunMoonThemeToggleBtn .sunMoon {
-    transform-origin: center center;
-  }
-
-  /* Sun Rays */
-  .st-sunMoonThemeToggleBtn .sunRay {
-    transform-origin: center center;
+  .chat-card-bg {
+    background-image: url("{{ url_for('static', filename='images/chat-card.png') }}");
   }
 </style>
 
-<script>
-  // --- 1. Theme Toggle Logic ---
-  const themeToggle = document.getElementById("themeToggle");
-  const html = document.documentElement;
-  const navLogo = document.getElementById("nav-logo");
-
-  // Check LocalStorage or System Preference
-  if (
-    localStorage.theme === "dark" ||
-    (!("theme" in localStorage) &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches)
-  ) {
-    html.classList.add("dark");
-    themeToggle.checked = true;
-    updateLogoColor(true);
-  } else {
-    html.classList.remove("dark");
-    themeToggle.checked = false;
-    updateLogoColor(false);
-  }
-
-  // Toggle Event
-  themeToggle.addEventListener("change", function () {
-    if (this.checked) {
-      html.classList.add("dark");
-      localStorage.theme = "dark";
-      updateLogoColor(true);
-    } else {
-      html.classList.remove("dark");
-      localStorage.theme = "light";
-      updateLogoColor(false);
-    }
-  });
-
-  // --- 2. Logo Color Changing Logic ---
-  function updateLogoColor(isDark) {
-    if (isDark) {
-      // If logo needs inversion in dark mode (e.g., black logo becoming white)
-      // Adjust 'invert(1)' or 'brightness(0) invert(1)' based on your specific logo image
-      navLogo.style.filter = "brightness(0) invert(1)";
-    } else {
-      // Reset filter for light mode
-      navLogo.style.filter = "none";
-    }
-  }
-
-  // --- 3. Navbar Scroll Effect ---
-  window.addEventListener("scroll", () => {
-    const navbar = document.getElementById("navbar");
-    if (window.scrollY > 20) {
-      navbar.classList.add("shadow-lg", "bg-white/95", "dark:bg-slate-900/95");
-      navbar.classList.remove("bg-white/80", "dark:bg-slate-900/80");
-    } else {
-      navbar.classList.remove(
-        "shadow-lg",
-        "bg-white/95",
-        "dark:bg-slate-900/95"
-      );
-      navbar.classList.add("bg-white/80", "dark:bg-slate-900/80");
-    }
-  });
-</script>
 {% endblock %}

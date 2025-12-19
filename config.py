@@ -4,22 +4,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-prod'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///chat.db'
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SESSION_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_SECURE = os.environ.get('FLASK_ENV') == 'production'
-    SESSION_COOKIE_SAMESITE = 'Lax'
-
-class DevelopmentConfig(Config):
-    DEBUG = True
-
-class ProductionConfig(Config):
-    DEBUG = False
-    SESSION_COOKIE_SECURE = True
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard-to-guess-string-2026'
+    DB_PATH = os.path.join(os.getcwd(), 'chat.db') 
+    REDIS_URL = os.environ.get('REDIS_URL') or "redis://localhost:6379"
 
 config = {
-    'development': DevelopmentConfig,
-    'production': ProductionConfig,
-    'default': DevelopmentConfig
+    'default': Config
 }

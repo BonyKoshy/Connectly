@@ -6,10 +6,10 @@
 
 {% block content %}
 <main class="form-container">
-    <p class="title" style="color: #dc3545;">Error {{ error_code }}</p>
+    <p class="title text-red-600 dark:text-red-400">Error {{ error_code }}</p>
     <div style="margin-top: 20px;">
-        <h3 style="color: #ffffff;">{{ error_title }}</h3>
-        <p style="color: #b0c7f0; margin-top: 10px;">{{ error_message }}</p>
+        <h3 class="text-slate-800 dark:text-white">{{ error_title }}</h3>
+        <p class="text-slate-600 dark:text-slate-400" style="margin-top: 10px;">{{ error_message }}</p>
     </div>
     <div style="margin-top: 30px;">
         <a href="{{ url_for('main.index') }}" class="sign" style="text-decoration: none; display: inline-block;">Return Home</a>

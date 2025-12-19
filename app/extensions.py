@@ -1,8 +1,16 @@
-from flask_socketio import SocketIO
-from flask_wtf.csrf import CSRFProtect
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
+from socketio import AsyncServer
+from quart_rate_limiter import RateLimiter
 
-socketio = SocketIO()
-csrf = CSRFProtect()
-limiter = Limiter(key_func=get_remote_address, storage_uri="memory://")
+# Initialize SocketIO with ASGI mode and Connection State Recovery
+socketio = AsyncServer(
+    async_mode='asgi',
+    cors_allowed_origins="*",
+    logger=True,
+    engineio_logger=True,
+    connection_state_recovery={
+        'max_disconnection_duration': 120 * 1000, # 2 minutes recovery window
+        'skip_middlewares': True
+    }
+)
+
+limiter = RateLimiter()

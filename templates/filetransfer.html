@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="chat-layout">
+<div class="chat-layout bg-white dark:bg-slate-900 transition-colors duration-300">
     <!-- Sidebar -->
     <aside class="chat-sidebar">
         <div class="chat-sidebar__nav">
@@ -32,6 +32,26 @@
         </div>
         
         <div class="chat-sidebar__bottom">
+            <div class="nav-item">
+                <label for="themeToggle" class="themeToggle st-sunMoonThemeToggleBtn">
+                    <input type="checkbox" id="themeToggle" class="themeToggleInput" aria-label="Toggle Theme" />
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor" stroke="none">
+                        <mask id="moon-mask-sidebar-file">
+                            <rect x="0" y="0" width="20" height="20" fill="white"></rect>
+                            <circle cx="11" cy="3" r="8" fill="black"></circle>
+                        </mask>
+                        <circle class="sunMoon" cx="10" cy="10" r="8" mask="url(#moon-mask-sidebar-file)"></circle>
+                        <g>
+                            <circle class="sunRay sunRay1" cx="18" cy="10" r="1.5"></circle>
+                            <circle class="sunRay sunRay2" cx="14" cy="16.928" r="1.5"></circle>
+                            <circle class="sunRay sunRay3" cx="6" cy="16.928" r="1.5"></circle>
+                            <circle class="sunRay sunRay4" cx="2" cy="10" r="1.5"></circle>
+                            <circle class="sunRay sunRay5" cx="6" cy="3.1718" r="1.5"></circle>
+                            <circle class="sunRay sunRay6" cx="14" cy="3.1718" r="1.5"></circle>
+                        </g>
+                    </svg>
+                </label>
+            </div>
             <a class="nav-item" href="{{ url_for('main.profile') }}" title="Profile">
                 <div class="avatar avatar--small"><i class="bi bi-person"></i></div>
                 <span class="nav-item__label">{{ username }}</span>
@@ -47,8 +67,8 @@
         <div class="chat-content center-content" style="align-items: center; justify-content: center; height: 100%;">
             <div class="placeholder-card" style="text-align: center;">
                 <img src="/static/images/file.png" alt="File Transfer" style="max-width: 300px;">
-                <h2 class="headline-medium" style="margin-top: 24px;">Secure File Transfer Coming Soon</h2>
-                <p class="body-large" style="color: var(--md-sys-color-on-surface-variant);">P2P WebRTC file sharing is under development.</p>
+                <h2 class="headline-medium text-slate-800 dark:text-white" style="margin-top: 24px;">Secure File Transfer Coming Soon</h2>
+                <p class="body-large text-slate-600 dark:text-slate-400">P2P WebRTC file sharing is under development.</p>
             </div>
         </div>
     </main>

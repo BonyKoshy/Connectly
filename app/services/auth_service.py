@@ -1,33 +1,31 @@
-from werkzeug.security import generate_password_hash, check_password_hash
+import aiosqlite
 from app.db import get_db_connection
-from typing import Optional, Dict, Any, Tuple
-import sqlite3
+from werkzeug.security import generate_password_hash, check_password_hash
 
-def register_user(username: str, password: str, language: str) -> Tuple[bool, str]:
-    """Registers a new user."""
-    hashed_password = generate_password_hash(password)
-    conn = get_db_connection()
-    try:
-        conn.execute("INSERT INTO users (username, password) VALUES (?, ?)", 
-                    (username, hashed_password))
-        conn.execute("UPDATE users SET language = ? WHERE username = ?",
-                    (language, username))
-        conn.commit()
-        conn.close()
-        return True, "User registered successfully"
-    except sqlite3.IntegrityError:
-        conn.close()
-        return False, "Username already exists"
-    except Exception as e:
-        conn.close()
-        return False, str(e)
-
-def authenticate_user(username: str, password: str) -> Optional[Dict[str, Any]]:
-    """Authenticates a user and returns their details if successful."""
-    conn = get_db_connection()
-    user = conn.execute("SELECT username, password, COALESCE(language, 'en') as language FROM users WHERE username = ?", (username,)).fetchone()
-    conn.close()
+async def register_user(username, password):
+    """Registers a new user asynchronously."""
+    password_hash = generate_password_hash(password)
     
-    if user and check_password_hash(user['password'], password):
-        return {"username": user["username"], "language": user["language"]}
-    return None
+    conn = await get_db_connection()
+    try:
+        await conn.execute("INSERT INTO users (username, password) VALUES (?, ?)", 
+                           (username, password_hash))
+        await conn.commit()
+        return True
+    except aiosqlite.IntegrityError:
+        return False
+    finally:
+        await conn.close()
+
+async def authenticate_user(username, password):
+    """Authenticates a user asynchronously."""
+    conn = await get_db_connection()
+    try:
+        async with conn.execute("SELECT password FROM users WHERE username = ?", (username,)) as cursor:
+            user = await cursor.fetchone()
+        
+        if user and check_password_hash(user['password'], password):
+            return True
+        return False
+    finally:
+        await conn.close()
